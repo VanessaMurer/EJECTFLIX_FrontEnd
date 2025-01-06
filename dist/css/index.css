@@ -4,17 +4,18 @@ body {
 
   font-family: "Hammersmith One", sans-serif;
 }
-
 .fundo-escuro {
   background-color: #1b1b1b;
 }
+
+/* NAV */
 
 .btn-add-filmes {
   border: 1px solid var(--amarelo-2);
 }
 
 .nav-principal {
-  gap: 200px;
+  gap: 5rem;
 }
 
 /* MOBILE NAV-BAR */
@@ -156,4 +157,44 @@ input[type="file"] {
   font-weight: 400;
   font-size: 10px;
   margin: 0;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 767px) {
+  .nav-mobile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .btn-menu {
+    margin-bottom: 5px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container-nav {
+    width: 800px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .container-nav {
+    width: 900px;
+  }
+
+  .nav-principal {
+    gap: 8rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container-nav {
+    width: 1000px;
+  }
+
+  .nav-principal {
+    gap: 10rem;
+  }
 }

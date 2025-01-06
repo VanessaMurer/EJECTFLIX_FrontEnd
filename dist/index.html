@@ -37,49 +37,51 @@
   <body class="fundo-escuro">
     <header>
       <nav class="navbar navbar-expand-md p-0">
-        <div class="container-md">
-          <a href="#"><img src="./img/Logo_EJECTFLIX.png" alt="" /></a>
+        <div class="container-md container-nav">
+          <div class="nav-mobile">
+            <a href="#"><img src="./img/Logo_EJECTFLIX.png" alt="" /></a>
 
-          <!-- Botão responsivo -->
-          <div class="d-md-none dropdown">
-            <button
-              class="btn dropdown-toggle text-white"
-              type="button"
-              id="dropdownMenuButton"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Menu
-            </button>
+            <!-- Botão responsivo -->
+            <div class="d-md-none dropdown">
+              <button
+                class="btn dropdown-toggle text-white btn-menu"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Menu
+              </button>
 
-            <!-- Links do Dropdown -->
-            <ul
-              class="dropdown-menu menu-dw-bg"
-              aria-labelledby="dropdownMenuButton"
-            >
-              <li><a class="link-menu btn-inicio" href="#">Início</a></li>
-              <li>
-                <a
-                  class="link-menu"
-                  data-bs-toggle="collapse"
-                  href="#navCategorias"
-                  role="button"
-                  aria-expanded="false"
-                  aria-controls="navCategorias"
-                  href="#"
-                  >Categorias</a
-                >
-              </li>
-              <li>
-                <a
-                  class="link-menu"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalAddFilme"
-                  href="#"
-                  >Adicionar Filmes</a
-                >
-              </li>
-            </ul>
+              <!-- Links do Dropdown -->
+              <ul
+                class="dropdown-menu menu-dw-bg"
+                aria-labelledby="dropdownMenuButton"
+              >
+                <li><a class="link-menu btn-inicio" href="#">Início</a></li>
+                <li>
+                  <a
+                    class="link-menu"
+                    data-bs-toggle="collapse"
+                    href="#navCategorias"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="navCategorias"
+                    href="#"
+                    >Categorias</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="link-menu"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAddFilme"
+                    href="#"
+                    >Adicionar Filmes</a
+                  >
+                </li>
+              </ul>
+            </div>
           </div>
 
           <!-- Links para telas grandes -->
