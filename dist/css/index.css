@@ -1,0 +1,159 @@
+body {
+  --amarelo-1: #f6d20d;
+  --amarelo-2: #e3c72dcc;
+
+  font-family: "Hammersmith One", sans-serif;
+}
+
+.fundo-escuro {
+  background-color: #1b1b1b;
+}
+
+.btn-add-filmes {
+  border: 1px solid var(--amarelo-2);
+}
+
+.nav-principal {
+  gap: 200px;
+}
+
+/* MOBILE NAV-BAR */
+.menu-dw-bg {
+  background-color: #272323f5;
+}
+
+.link-menu {
+  display: block;
+  text-decoration: none;
+  padding: 10px;
+  color: white;
+}
+
+.link-menu:hover {
+  color: var(--amarelo-1);
+}
+
+footer {
+  font-family: "Roboto Mono";
+  font-size: 12px;
+}
+
+/* NAV CATEGORIAS */
+.nav-categorias {
+  font-size: 20px;
+  gap: 100px;
+  height: 74px;
+}
+
+.link-categoria:hover {
+  border-bottom: 1px solid var(--amarelo-1);
+}
+
+/* MODAL ADD */
+
+.modal-bg {
+  background-color: var(--amarelo-2);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.titulos-form {
+  font-size: 14px;
+}
+
+.btn-modal-add,
+.btn-modal-edit,
+.input-nome-filme,
+.input-add-file {
+  border: 0.5px solid #dbdbdb;
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.input-add-file,
+.btn-modal-add,
+.btn-modal-edit {
+  width: 173px;
+  padding: 6px 12px;
+}
+
+.input-add-file {
+  display: inline-block;
+  color: #eaeaeacc;
+  font-size: 14px;
+}
+
+.input-nome-filme::placeholder {
+  color: #eaeaea33;
+  font-size: 14px;
+}
+
+.btn-modal-add,
+.btn-modal-edit {
+  font-size: 16px;
+}
+
+.btns-modal-gap {
+  gap: 24px;
+}
+
+.btn-modal-excluir {
+  border: 0.5px solid #f80000;
+}
+
+.btn-modal-excluir:hover {
+  background-color: #f80000 !important;
+  color: #ffffff;
+}
+
+/* entrar */
+
+.btn-entrar,
+.btn-modal-add:hover,
+.btn-modal-edit:hover {
+  background-color: var(--amarelo-2);
+  color: #000000;
+}
+
+.btn-entrar:hover {
+  background-color: var(--amarelo-1);
+}
+
+/* teste cards */
+
+.card-filme {
+  overflow: hidden;
+  border: none;
+}
+
+.card-body-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+}
+
+.card-icon {
+  color: var(--amarelo-1);
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 20px;
+}
+
+.card-titulo {
+  font-weight: 400;
+  font-size: 16px;
+  margin: 0;
+}
+
+.card-categoria,
+.card-ano {
+  font-weight: 400;
+  font-size: 10px;
+  margin: 0;
+}
