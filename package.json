@@ -9,7 +9,7 @@
     "start": "concurrently \"npm run watch\" \"npm run server\" \"npm run api\"",
     "compile": "tsc",
     "watch": "tsc -w",
-    "api": "json-server --watch backend/db.json --id 'autoIncrement' --port 3001"
+    "api": "json-server --watch backend/db.json  --port 3001"
   },
   "repository": {
     "type": "git",

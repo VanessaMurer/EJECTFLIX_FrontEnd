@@ -54,8 +54,38 @@ export class FilmeController {
             this.limparFormulario();
         });
     }
-    editarFilmeFromFormulario() {
-        return __awaiter(this, void 0, void 0, function* () { });
+    editandoFilmeFromFormulario(id, tituloEditado, categoriaEditada, anoEditado) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const filmeOriginal = yield ApiService.buscarFilmeByID(id);
+            const titulo = tituloEditado;
+            const descricao = filmeOriginal.descricao;
+            const ano_lancamento = parseInt(anoEditado);
+            const duracao = filmeOriginal.duracao;
+            const genero = categoriaEditada;
+            const classificacao_etaria = filmeOriginal.classificacao_etaria;
+            const idioma_original = filmeOriginal.idioma_original;
+            const data_estreia = filmeOriginal.data_estreia;
+            const avaliacao_media = filmeOriginal.avaliacao_media;
+            const poster = "./img/percy.png";
+            const filme = {
+                titulo,
+                descricao,
+                ano_lancamento,
+                duracao,
+                genero,
+                classificacao_etaria,
+                idioma_original,
+                data_estreia,
+                avaliacao_media,
+                poster,
+            };
+            yield ApiService.atualizarFilme(id, filme);
+            const categorias = categoriaEditada
+                .split(",")
+                .map((categoria) => categoria.trim());
+            this.filmes.atualizaFilme(parseInt(id), titulo, categorias, ano_lancamento, poster);
+            this.atualizacaoView();
+        });
     }
     buscarFilmePeloId(id) {
         const filmeDoId = this.filmes
@@ -79,7 +109,7 @@ export class FilmeController {
                         .map((categoria) => categoria.trim());
                     const ano = filme.ano_lancamento;
                     const poster = "./img/percy.png";
-                    const id = filme.id;
+                    const id = Number(filme.id);
                     const novoFilme = new Filme(nome, categoria, ano, poster, id);
                     this.filmes.adiciona(novoFilme);
                 });

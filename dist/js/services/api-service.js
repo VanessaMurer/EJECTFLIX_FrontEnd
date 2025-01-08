@@ -11,8 +11,8 @@ export class ApiService {
     static buscarFilmes() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const respose = yield axios.get(`${this.BASE_URL}/filmes`);
-                return yield respose.data;
+                const response = yield axios.get(`${this.BASE_URL}/filmes`);
+                return yield response.data;
             }
             catch (error) {
                 throw error;
@@ -22,10 +22,43 @@ export class ApiService {
     static salvarFilme(filme) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const respose = yield axios.post(`${this.BASE_URL}/filmes`, filme);
+                const response = yield axios.post(`${this.BASE_URL}/filmes`, filme);
                 console.log(filme);
                 console.log("Filme adicionado com sucesso");
-                return yield respose.data;
+                return yield response.data;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    static buscarFilmeByID(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield axios.get(`${this.BASE_URL}/filmes/${id}`);
+                return yield response.data;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    static atualizarFilme(id, filme) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield axios.put(`${this.BASE_URL}/filmes/${id}`, filme);
+                console.log("Filme atualizado com sucesso", filme);
+            }
+            catch (error) {
+                console.error("Erro ao atualizar o filme:", error);
+                throw error;
+            }
+        });
+    }
+    static excluirFilme(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield axios.delete(`${this.BASE_URL}/filmes/${id}`);
             }
             catch (error) {
                 throw error;

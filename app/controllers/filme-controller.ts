@@ -63,7 +63,54 @@ export class FilmeController {
     this.limparFormulario();
   }
 
-  public async editarFilmeFromFormulario() {}
+  public async editandoFilmeFromFormulario(
+    id: string,
+    tituloEditado: string,
+    categoriaEditada: string,
+    anoEditado: string
+  ) {
+    const filmeOriginal: FilmeApi = await ApiService.buscarFilmeByID(id);
+
+    const titulo = tituloEditado;
+    const descricao = filmeOriginal.descricao;
+    const ano_lancamento = parseInt(anoEditado);
+    const duracao = filmeOriginal.duracao;
+    const genero = categoriaEditada;
+    const classificacao_etaria = filmeOriginal.classificacao_etaria;
+    const idioma_original = filmeOriginal.idioma_original;
+    const data_estreia = filmeOriginal.data_estreia;
+    const avaliacao_media = filmeOriginal.avaliacao_media;
+    const poster = "./img/percy.png";
+
+    const filme = {
+      titulo,
+      descricao,
+      ano_lancamento,
+      duracao,
+      genero,
+      classificacao_etaria,
+      idioma_original,
+      data_estreia,
+      avaliacao_media,
+      poster,
+    };
+
+    await ApiService.atualizarFilme(id, filme);
+
+    const categorias: string[] = categoriaEditada
+      .split(",")
+      .map((categoria) => categoria.trim());
+
+    this.filmes.atualizaFilme(
+      parseInt(id),
+      titulo,
+      categorias,
+      ano_lancamento,
+      poster
+    );
+
+    this.atualizacaoView();
+  }
 
   public buscarFilmePeloId(id: string): Filme {
     const filmeDoId = this.filmes
@@ -88,7 +135,7 @@ export class FilmeController {
           .map((categoria) => categoria.trim());
         const ano: number = filme.ano_lancamento;
         const poster: string = "./img/percy.png";
-        const id: number = filme.id;
+        const id: number = Number(filme.id);
 
         const novoFilme = new Filme(nome, categoria, ano, poster, id);
         this.filmes.adiciona(novoFilme);

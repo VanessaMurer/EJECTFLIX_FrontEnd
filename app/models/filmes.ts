@@ -23,4 +23,22 @@ export class Filmes {
 
     return filmesFiltrados;
   }
+
+  public atualizaFilme(
+    id: number,
+    titulo: string,
+    categoria: string[],
+    ano: number,
+    imagem: string
+  ) {
+    const index = this.filmes.findIndex((filme) => filme.id === id);
+
+    if (index !== -1) {
+      const filmeAtualizado = new Filme(titulo, categoria, ano, imagem, id);
+
+      this.filmes[index] = filmeAtualizado;
+    } else {
+      console.error("Filme não encontrado na lista");
+    }
+  }
 }
