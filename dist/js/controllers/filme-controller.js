@@ -79,12 +79,27 @@ export class FilmeController {
                 avaliacao_media,
                 poster,
             };
-            yield ApiService.atualizarFilme(id, filme);
-            const categorias = categoriaEditada
-                .split(",")
-                .map((categoria) => categoria.trim());
-            this.filmes.atualizaFilme(parseInt(id), titulo, categorias, ano_lancamento, poster);
-            this.atualizacaoView();
+            try {
+                yield ApiService.atualizarFilme(id, filme);
+                const categorias = categoriaEditada
+                    .split(",")
+                    .map((categoria) => categoria.trim());
+                this.filmes.atualizaFilme(parseInt(id), titulo, categorias, ano_lancamento, poster);
+                this.atualizacaoView();
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    excluirPensamento(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield ApiService.excluirFilme(id);
+                this.filmes.excluirFilme(parseInt(id));
+                this.atualizacaoView();
+            }
+            catch (error) { }
         });
     }
     buscarFilmePeloId(id) {

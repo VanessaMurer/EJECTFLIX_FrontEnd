@@ -41,4 +41,14 @@ export class Filmes {
       console.error("Filme não encontrado na lista");
     }
   }
+
+  public excluirFilme(id: number) {
+    const index = this.filmes.findIndex((filme) => filme.id === id);
+
+    if (index !== -1) {
+      this.filmes.splice(index, 1);
+    } else {
+      console.error("Filme não encontrado na lista");
+    }
+  }
 }

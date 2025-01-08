@@ -95,21 +95,34 @@ export class FilmeController {
       poster,
     };
 
-    await ApiService.atualizarFilme(id, filme);
+    try {
+      await ApiService.atualizarFilme(id, filme);
 
-    const categorias: string[] = categoriaEditada
-      .split(",")
-      .map((categoria) => categoria.trim());
+      const categorias: string[] = categoriaEditada
+        .split(",")
+        .map((categoria) => categoria.trim());
 
-    this.filmes.atualizaFilme(
-      parseInt(id),
-      titulo,
-      categorias,
-      ano_lancamento,
-      poster
-    );
+      this.filmes.atualizaFilme(
+        parseInt(id),
+        titulo,
+        categorias,
+        ano_lancamento,
+        poster
+      );
 
-    this.atualizacaoView();
+      this.atualizacaoView();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async excluirPensamento(id: string) {
+    try {
+      await ApiService.excluirFilme(id);
+
+      this.filmes.excluirFilme(parseInt(id));
+      this.atualizacaoView();
+    } catch (error) {}
   }
 
   public buscarFilmePeloId(id: string): Filme {

@@ -86,6 +86,18 @@ if (btnSaveEdit) {
   });
 }
 
+if (btnExcluir) {
+  btnExcluir.addEventListener("click", () => {
+    const nomeFilmeEdit = document.querySelector(
+      "#nomeFilmeEdit"
+    ) as HTMLInputElement;
+
+    const id: string = nomeFilmeEdit.getAttribute("data-id") as string;
+
+    controller.excluirPensamento(id);
+  });
+}
+
 btnsCategorias.forEach((btn) => {
   btn.addEventListener("click", (event) => {
     event.preventDefault();

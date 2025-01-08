@@ -50,6 +50,13 @@ if (btnSaveEdit) {
         controller.editandoFilmeFromFormulario(id, nomeFilmeEdit.value, categoriaFilmeEdit.value, anoFilmeEdit.value);
     });
 }
+if (btnExcluir) {
+    btnExcluir.addEventListener("click", () => {
+        const nomeFilmeEdit = document.querySelector("#nomeFilmeEdit");
+        const id = nomeFilmeEdit.getAttribute("data-id");
+        controller.excluirPensamento(id);
+    });
+}
 btnsCategorias.forEach((btn) => {
     btn.addEventListener("click", (event) => {
         event.preventDefault();
