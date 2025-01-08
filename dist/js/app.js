@@ -1,11 +1,14 @@
 import { FilmeController } from "./controllers/filme-controller.js";
 const controller = new FilmeController();
+controller.adicionaFilmesDaApi();
 const formAdd = document.querySelector("#form-add");
+const containerFilmes = document.querySelector("#filmes-container");
 const btnsCategorias = document.querySelectorAll("[data-category]");
 if (formAdd) {
     formAdd.addEventListener("submit", (event) => {
         event.preventDefault();
-        controller.adicionaFilme();
+        controller.adicionarFilmeFromFormulario();
+        controller.adicionaFilmesDaApi();
     });
 }
 else {

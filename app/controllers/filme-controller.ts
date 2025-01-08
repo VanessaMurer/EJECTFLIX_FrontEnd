@@ -1,5 +1,6 @@
 import { Filme } from "../models/filme.js";
 import { Filmes } from "../models/filmes.js";
+import { ApiService } from "../services/api-service.js";
 import { FilmesView } from "../views/filmes-view.js";
 
 export class FilmeController {
@@ -33,40 +34,68 @@ export class FilmeController {
     });
   }
 
-  public adicionaFilme(): void {
-    const ano = parseInt(this.inputAno.value);
-    const categorias = this.inputCategoria.value
-      .split(",")
-      .map((categoria) => categoria.trim());
+  public async adicionarFilmeFromFormulario() {
+    const titulo = this.inputNome.value;
+    const descricao = "";
+    const ano_lancamento = parseInt(this.inputAno.value);
+    const duracao = "";
+    const genero = this.inputCategoria.value;
+    const classificacao_etaria = "";
+    const idioma_original = "";
+    const data_estreia = "";
+    const avaliacao_media = "";
+    const poster = this.getUrlImagem();
 
-    let imagemUrl = "./img/percy.png";
+    const filme = {
+      titulo,
+      descricao,
+      ano_lancamento,
+      duracao,
+      genero,
+      classificacao_etaria,
+      idioma_original,
+      data_estreia,
+      avaliacao_media,
+      poster,
+    };
 
-    if (this.inputImagem.files && this.inputImagem.files[0]) {
-      const img = this.inputImagem.files[0];
+    await ApiService.salvarFilme(filme);
+    this.limparFormulario();
+  }
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        imagemUrl = reader.result as string;
+  public async editarFilmeFromFormulario() {}
 
-        const filme = new Filme(
-          this.inputNome.value,
-          categorias,
-          ano,
-          imagemUrl
-        );
+  public buscarFilmePeloId(id: string): Filme {
+    const filmeDoId = this.filmes
+      .lista()
+      .find((filme) => filme.id === parseInt(id));
 
-        this.filmes.adiciona(filme);
-        this.limparFormulario();
-        this.atualizacaoView();
-      };
-
-      reader.readAsDataURL(img);
+    if (filmeDoId) {
+      return filmeDoId;
     } else {
-      const filme = new Filme(this.inputNome.value, categorias, ano, imagemUrl);
-      this.filmes.adiciona(filme);
-      this.limparFormulario();
-      this.atualizacaoView();
+      throw new Error("Filme não encontrado");
     }
+  }
+
+  public async adicionaFilmesDaApi() {
+    try {
+      const filmesApi: FilmeApi[] = await ApiService.buscarFilmes();
+
+      filmesApi.forEach((filme) => {
+        const nome: string = filme.titulo;
+        const categoria: string[] = filme.genero
+          .split(",")
+          .map((categoria) => categoria.trim());
+        const ano: number = filme.ano_lancamento;
+        const poster: string = "./img/percy.png";
+        const id: number = filme.id;
+
+        const novoFilme = new Filme(nome, categoria, ano, poster, id);
+        this.filmes.adiciona(novoFilme);
+      });
+
+      this.atualizacaoView();
+    } catch (error) {}
   }
 
   public filtrarCategoria(categoria: string): void {
@@ -74,8 +103,19 @@ export class FilmeController {
     this.filmesView.update(filmesFiltrados);
   }
 
-  public imprime(): void {
-    console.log(this.filmes.lista());
+  private getUrlImagem(): string {
+    let imagemUrl = "./img/percy.png";
+
+    if (this.inputImagem.files && this.inputImagem.files[0]) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        imagemUrl = reader.result as string;
+      };
+
+      return imagemUrl;
+    } else {
+      return imagemUrl;
+    }
   }
 
   private limparFormulario(): void {

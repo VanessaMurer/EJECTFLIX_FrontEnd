@@ -164,6 +164,25 @@
 
     <main class="filmes-section" id="filmes-container">
       <div class="card card-filme">
+        <div>
+          <i
+            class="bi bi-plus-square-fill card-icon btnPlusEdit"
+            data-id="xxx"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#modalEditFilme"
+          ></i>
+        </div>
+        <div>
+          <img src="./img/percy.png" alt="Poster do filme percy" />
+          <div class="card-body-overlay text-center text-white">
+            <h5 class="card-titulo">Percy Jackson</h5>
+            <p class="card-categoria">Aventura</p>
+            <p class="card-ano">2007</p>
+          </div>
+        </div>
+      </div>
+      <div class="card card-filme">
         <i
           class="bi bi-plus-square-fill card-icon btnPlusEdit"
           data-id="xxx"
@@ -175,7 +194,7 @@
           <img src="./img/percy.png" alt="Poster do filme percy" />
           <div class="card-body-overlay text-center text-white">
             <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura, Ação</p>
+            <p class="card-categoria">Ação</p>
             <p class="card-ano">2007</p>
           </div>
         </div>
@@ -209,24 +228,7 @@
           <img src="./img/percy.png" alt="Poster do filme percy" />
           <div class="card-body-overlay text-center text-white">
             <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura, Ação</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div>
-      <div class="card card-filme">
-        <i
-          class="bi bi-plus-square-fill card-icon btnPlusEdit"
-          data-id="xxx"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalEditFilme"
-        ></i>
-        <div>
-          <img src="./img/percy.png" alt="Poster do filme percy" />
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura, Ação</p>
+            <p class="card-categoria">Aventura</p>
             <p class="card-ano">2007</p>
           </div>
         </div>
@@ -519,6 +521,8 @@
     </div>
 
     <a href="./pages/login.html">Login</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
