@@ -11,21 +11,18 @@ import { Filme } from "../models/filme.js";
 import { Filmes } from "../models/filmes.js";
 import { ApiServiceFilmes } from "../services/api-service-filmes.js";
 import { FilmesView } from "../views/filmes-view.js";
+import { MensagemView } from "../views/mensagem-view.js";
 export class FilmeController {
     constructor() {
         this.filmes = new Filmes();
         this.filmesView = new FilmesView("#filmes-container");
+        this.mensagemViewAdd = new MensagemView(".mensagemViewAdd");
+        this.mensagemViewEdit = new MensagemView(".mensagemViewEdit");
         this.inputNome = document.querySelector("#nomeFilmeAdd");
         this.inputCategoria = document.querySelector("#categoriaFilmeAdd");
         this.inputAno = document.querySelector("#anoFilmeAdd");
         this.inputImagem = document.querySelector("#imagemFilmeAdd");
         this.filmesContainer = document.querySelector("#filmes-container");
-        this.btnInicioElements = document.querySelectorAll(".btn-inicio");
-        this.btnInicioElements.forEach((btnInicio) => {
-            btnInicio.addEventListener("click", () => {
-                this.atualizacaoView();
-            });
-        });
     }
     adicionarFilmeFromFormulario() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -51,14 +48,20 @@ export class FilmeController {
                 avaliacao_media,
                 poster,
             };
-            const filmeSalvo = yield ApiServiceFilmes.salvarFilme(filme);
-            const categorias = genero
-                .split(",")
-                .map((categoria) => categoria.trim());
-            const novoFilme = new Filme(titulo, categorias, ano_lancamento, poster, filmeSalvo.id);
-            this.filmes.adiciona(novoFilme);
-            this.atualizacaoView();
-            this.limparFormulario();
+            try {
+                const filmeSalvo = yield ApiServiceFilmes.salvarFilme(filme);
+                const categorias = genero
+                    .split(",")
+                    .map((categoria) => categoria.trim());
+                const novoFilme = new Filme(titulo, categorias, ano_lancamento, poster, filmeSalvo.id);
+                this.filmes.adiciona(novoFilme);
+                this.mensagemViewAdd.update("Filme adicionada com sucesso!", 3000);
+                this.atualizacaoView();
+                this.limparFormulario();
+            }
+            catch (error) {
+                this.mensagemViewAdd.update("Erro ao adicionar filme", 3000);
+            }
         });
     }
     editandoFilmeFromFormulario(id, tituloEditado, categoriaEditada, anoEditado) {
@@ -93,8 +96,10 @@ export class FilmeController {
                     .map((categoria) => categoria.trim());
                 this.filmes.atualizaFilme(parseInt(id), titulo, categorias, ano_lancamento, poster);
                 this.atualizacaoView();
+                this.mensagemViewEdit.update("Filme editado com sucesso!", 3000);
             }
             catch (error) {
+                this.mensagemViewEdit.update("Erro ao editar filme", 3000);
                 throw error;
             }
         });

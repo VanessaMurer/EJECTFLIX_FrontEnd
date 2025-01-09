@@ -20,7 +20,7 @@ if (formAdd) {
     controller.adicionarFilmeFromFormulario();
   });
 } else {
-  throw Error(
+  console.log(
     "Não foi possível adicionar o filme. Verifique se o form existe."
   );
 }

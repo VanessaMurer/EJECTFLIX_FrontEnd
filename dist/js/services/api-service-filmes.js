@@ -15,6 +15,7 @@ export class ApiServiceFilmes {
                 return yield response.data;
             }
             catch (error) {
+                console.log("Erro ao buscar filmes");
                 throw error;
             }
         });
@@ -23,11 +24,10 @@ export class ApiServiceFilmes {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const response = yield axios.post(`${this.BASE_URL}`, filme);
-                console.log(filme);
-                console.log("Filme adicionado com sucesso");
                 return yield response.data;
             }
             catch (error) {
+                console.log("Erro ao adicionar filme");
                 throw error;
             }
         });
@@ -39,6 +39,7 @@ export class ApiServiceFilmes {
                 return yield response.data;
             }
             catch (error) {
+                console.log("Erro ao buscar filme pelo ID");
                 throw error;
             }
         });
@@ -47,10 +48,9 @@ export class ApiServiceFilmes {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield axios.put(`${this.BASE_URL}/${id}`, filme);
-                console.log("Filme atualizado com sucesso", filme);
             }
             catch (error) {
-                console.error("Erro ao atualizar o filme:", error);
+                console.log("Erro ao atualizar o filme pelo ID");
                 throw error;
             }
         });
@@ -61,6 +61,7 @@ export class ApiServiceFilmes {
                 yield axios.delete(`${this.BASE_URL}/${id}`);
             }
             catch (error) {
+                console.log("Erro ao excluir filme pelo ID");
                 throw error;
             }
         });

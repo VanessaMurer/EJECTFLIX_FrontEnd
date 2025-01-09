@@ -6,6 +6,7 @@ export class ApiServiceFilmes {
       const response = await axios.get<FilmeApi[]>(`${this.BASE_URL}`);
       return await response.data;
     } catch (error) {
+      console.log("Erro ao buscar filmes");
       throw error;
     }
   }
@@ -13,11 +14,9 @@ export class ApiServiceFilmes {
   static async salvarFilme(filme: Object): Promise<FilmeApi> {
     try {
       const response = await axios.post<FilmeApi>(`${this.BASE_URL}`, filme);
-      console.log(filme);
-      console.log("Filme adicionado com sucesso");
-
       return await response.data;
     } catch (error) {
+      console.log("Erro ao adicionar filme");
       throw error;
     }
   }
@@ -27,6 +26,7 @@ export class ApiServiceFilmes {
       const response = await axios.get<FilmeApi>(`${this.BASE_URL}/${id}`);
       return await response.data;
     } catch (error) {
+      console.log("Erro ao buscar filme pelo ID");
       throw error;
     }
   }
@@ -34,9 +34,8 @@ export class ApiServiceFilmes {
   static async atualizarFilme(id: string, filme: object) {
     try {
       await axios.put(`${this.BASE_URL}/${id}`, filme);
-      console.log("Filme atualizado com sucesso", filme);
     } catch (error) {
-      console.error("Erro ao atualizar o filme:", error);
+      console.log("Erro ao atualizar o filme pelo ID");
       throw error;
     }
   }
@@ -45,6 +44,7 @@ export class ApiServiceFilmes {
     try {
       await axios.delete(`${this.BASE_URL}/${id}`);
     } catch (error) {
+      console.log("Erro ao excluir filme pelo ID");
       throw error;
     }
   }

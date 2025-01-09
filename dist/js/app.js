@@ -13,7 +13,7 @@ if (formAdd) {
     });
 }
 else {
-    throw Error("Não foi possível adicionar o filme. Verifique se o form existe.");
+    console.log("Não foi possível adicionar o filme. Verifique se o form existe.");
 }
 if (containerFilmes) {
     containerFilmes.addEventListener("click", (event) => {

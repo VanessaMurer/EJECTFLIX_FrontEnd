@@ -8,7 +8,6 @@
   ],
   "filmes": [
     {
-      "id": "1",
       "titulo": "Deadpool & Wolverine",
       "descricao": "A listless Wade Wilson toils away in civilian life with his days as the morally flexible mercenary, Deadpool, behind him. But when his homeworld faces an existential threat, Wade must reluctantly suit-up again with an even more reluctant Wolverine.",
       "ano_lancamento": 2024,
@@ -18,7 +17,8 @@
       "idioma_original": "en",
       "data_estreia": "2024-07-24",
       "avaliacao_media": "7.8",
-      "poster": "http://movies-api-juliocsoares.fly.dev/media/posters/8cdWjvZQUExUUTzyp4t6EDMubfO_bYZQFZD.jpg"
+      "poster": "./img/percy.png",
+      "id": "1"
     },
     {
       "id": "2",
