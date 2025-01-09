@@ -10,7 +10,12 @@ export class Filmes {
         return this.filmes;
     }
     filtrar(categoria) {
-        const filtrados = this.filmes.filter((filme) => filme.categoria.some((c) => c === categoria));
+        const arrayCategorias = categoria
+            .split(",")
+            .map((categoria) => categoria.trim());
+        const filtrados = this.filmes.filter((filme) => {
+            return arrayCategorias.some((categoria) => filme.categoria.includes(categoria));
+        });
         const filmesFiltrados = new Filmes();
         filtrados.forEach((filme) => {
             filmesFiltrados.adiciona(filme);
