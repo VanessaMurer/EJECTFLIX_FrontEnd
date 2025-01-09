@@ -1,18 +1,18 @@
-export class ApiService {
-  private static BASE_URL = "http://localhost:3001";
+export class ApiServiceFilmes {
+  private static BASE_URL = "http://localhost:3001/filmes";
 
   static async buscarFilmes(): Promise<FilmeApi[]> {
     try {
-      const response = await axios.get<FilmeApi[]>(`${this.BASE_URL}/filmes`);
+      const response = await axios.get<FilmeApi[]>(`${this.BASE_URL}`);
       return await response.data;
     } catch (error) {
       throw error;
     }
   }
 
-  static async salvarFilme(filme: Object) {
+  static async salvarFilme(filme: Object): Promise<FilmeApi> {
     try {
-      const response = await axios.post(`${this.BASE_URL}/filmes`, filme);
+      const response = await axios.post<FilmeApi>(`${this.BASE_URL}`, filme);
       console.log(filme);
       console.log("Filme adicionado com sucesso");
 
@@ -24,9 +24,7 @@ export class ApiService {
 
   static async buscarFilmeByID(id: string): Promise<FilmeApi> {
     try {
-      const response = await axios.get<FilmeApi>(
-        `${this.BASE_URL}/filmes/${id}`
-      );
+      const response = await axios.get<FilmeApi>(`${this.BASE_URL}/${id}`);
       return await response.data;
     } catch (error) {
       throw error;
@@ -35,7 +33,7 @@ export class ApiService {
 
   static async atualizarFilme(id: string, filme: object) {
     try {
-      await axios.put(`${this.BASE_URL}/filmes/${id}`, filme);
+      await axios.put(`${this.BASE_URL}/${id}`, filme);
       console.log("Filme atualizado com sucesso", filme);
     } catch (error) {
       console.error("Erro ao atualizar o filme:", error);
@@ -45,7 +43,7 @@ export class ApiService {
 
   static async excluirFilme(id: string) {
     try {
-      await axios.delete(`${this.BASE_URL}/filmes/${id}`);
+      await axios.delete(`${this.BASE_URL}/${id}`);
     } catch (error) {
       throw error;
     }

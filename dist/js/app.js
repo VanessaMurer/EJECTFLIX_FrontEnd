@@ -10,7 +10,6 @@ if (formAdd) {
     formAdd.addEventListener("submit", (event) => {
         event.preventDefault();
         controller.adicionarFilmeFromFormulario();
-        controller.adicionaFilmesDaApi();
     });
 }
 else {
@@ -54,7 +53,7 @@ if (btnExcluir) {
     btnExcluir.addEventListener("click", () => {
         const nomeFilmeEdit = document.querySelector("#nomeFilmeEdit");
         const id = nomeFilmeEdit.getAttribute("data-id");
-        controller.excluirPensamento(id);
+        controller.excluirFilme(id);
     });
 }
 btnsCategorias.forEach((btn) => {

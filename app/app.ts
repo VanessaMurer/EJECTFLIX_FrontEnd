@@ -1,6 +1,6 @@
 import { FilmeController } from "./controllers/filme-controller.js";
 import { Filme } from "./models/filme.js";
-import { ApiService } from "./services/api-service.js";
+import { ApiServiceFilmes } from "./services/api-service-filmes.js";
 
 const controller = new FilmeController();
 
@@ -18,7 +18,6 @@ if (formAdd) {
   formAdd.addEventListener("submit", (event) => {
     event.preventDefault();
     controller.adicionarFilmeFromFormulario();
-    controller.adicionaFilmesDaApi();
   });
 } else {
   throw Error(
@@ -94,7 +93,7 @@ if (btnExcluir) {
 
     const id: string = nomeFilmeEdit.getAttribute("data-id") as string;
 
-    controller.excluirPensamento(id);
+    controller.excluirFilme(id);
   });
 }
 

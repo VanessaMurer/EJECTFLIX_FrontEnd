@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Filme } from "../models/filme.js";
 import { Filmes } from "../models/filmes.js";
-import { ApiService } from "../services/api-service.js";
+import { ApiServiceFilmes } from "../services/api-service-filmes.js";
 import { FilmesView } from "../views/filmes-view.js";
 export class FilmeController {
     constructor() {
@@ -19,6 +19,7 @@ export class FilmeController {
         this.inputCategoria = document.querySelector("#categoriaFilmeAdd");
         this.inputAno = document.querySelector("#anoFilmeAdd");
         this.inputImagem = document.querySelector("#imagemFilmeAdd");
+        this.filmesContainer = document.querySelector("#filmes-container");
         this.btnInicioElements = document.querySelectorAll(".btn-inicio");
         this.btnInicioElements.forEach((btnInicio) => {
             btnInicio.addEventListener("click", () => {
@@ -50,13 +51,19 @@ export class FilmeController {
                 avaliacao_media,
                 poster,
             };
-            yield ApiService.salvarFilme(filme);
+            const filmeSalvo = yield ApiServiceFilmes.salvarFilme(filme);
+            const categorias = genero
+                .split(",")
+                .map((categoria) => categoria.trim());
+            const novoFilme = new Filme(titulo, categorias, ano_lancamento, poster, filmeSalvo.id);
+            this.filmes.adiciona(novoFilme);
+            this.atualizacaoView();
             this.limparFormulario();
         });
     }
     editandoFilmeFromFormulario(id, tituloEditado, categoriaEditada, anoEditado) {
         return __awaiter(this, void 0, void 0, function* () {
-            const filmeOriginal = yield ApiService.buscarFilmeByID(id);
+            const filmeOriginal = yield ApiServiceFilmes.buscarFilmeByID(id);
             const titulo = tituloEditado;
             const descricao = filmeOriginal.descricao;
             const ano_lancamento = parseInt(anoEditado);
@@ -80,7 +87,7 @@ export class FilmeController {
                 poster,
             };
             try {
-                yield ApiService.atualizarFilme(id, filme);
+                yield ApiServiceFilmes.atualizarFilme(id, filme);
                 const categorias = categoriaEditada
                     .split(",")
                     .map((categoria) => categoria.trim());
@@ -92,10 +99,10 @@ export class FilmeController {
             }
         });
     }
-    excluirPensamento(id) {
+    excluirFilme(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield ApiService.excluirFilme(id);
+                yield ApiServiceFilmes.excluirFilme(id);
                 this.filmes.excluirFilme(parseInt(id));
                 this.atualizacaoView();
             }
@@ -116,7 +123,7 @@ export class FilmeController {
     adicionaFilmesDaApi() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const filmesApi = yield ApiService.buscarFilmes();
+                const filmesApi = yield ApiServiceFilmes.buscarFilmes();
                 filmesApi.forEach((filme) => {
                     const nome = filme.titulo;
                     const categoria = filme.genero
@@ -156,6 +163,7 @@ export class FilmeController {
         this.inputAno.value = "";
     }
     atualizacaoView() {
+        this.filmesContainer.innerHTML = "";
         this.filmesView.update(this.filmes);
     }
 }

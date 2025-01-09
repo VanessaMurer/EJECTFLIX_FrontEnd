@@ -1,6 +1,6 @@
 import { Filme } from "../models/filme.js";
 import { Filmes } from "../models/filmes.js";
-import { ApiService } from "../services/api-service.js";
+import { ApiServiceFilmes } from "../services/api-service-filmes.js";
 import { FilmesView } from "../views/filmes-view.js";
 
 export class FilmeController {
@@ -9,6 +9,7 @@ export class FilmeController {
   private inputAno: HTMLInputElement;
   private inputImagem: HTMLInputElement;
   private btnInicioElements: NodeListOf<HTMLAnchorElement>;
+  private filmesContainer: HTMLElement;
 
   private filmes = new Filmes();
   private filmesView = new FilmesView("#filmes-container");
@@ -24,6 +25,10 @@ export class FilmeController {
     this.inputImagem = document.querySelector(
       "#imagemFilmeAdd"
     ) as HTMLInputElement;
+
+    this.filmesContainer = document.querySelector(
+      "#filmes-container"
+    ) as HTMLElement;
 
     this.btnInicioElements = document.querySelectorAll(".btn-inicio");
 
@@ -59,7 +64,23 @@ export class FilmeController {
       poster,
     };
 
-    await ApiService.salvarFilme(filme);
+    const filmeSalvo: FilmeApi = await ApiServiceFilmes.salvarFilme(filme);
+
+    const categorias: string[] = genero
+      .split(",")
+      .map((categoria) => categoria.trim());
+
+    const novoFilme = new Filme(
+      titulo,
+      categorias,
+      ano_lancamento,
+      poster,
+      filmeSalvo.id
+    );
+
+    this.filmes.adiciona(novoFilme);
+
+    this.atualizacaoView();
     this.limparFormulario();
   }
 
@@ -69,7 +90,7 @@ export class FilmeController {
     categoriaEditada: string,
     anoEditado: string
   ) {
-    const filmeOriginal: FilmeApi = await ApiService.buscarFilmeByID(id);
+    const filmeOriginal: FilmeApi = await ApiServiceFilmes.buscarFilmeByID(id);
 
     const titulo = tituloEditado;
     const descricao = filmeOriginal.descricao;
@@ -96,7 +117,7 @@ export class FilmeController {
     };
 
     try {
-      await ApiService.atualizarFilme(id, filme);
+      await ApiServiceFilmes.atualizarFilme(id, filme);
 
       const categorias: string[] = categoriaEditada
         .split(",")
@@ -116,9 +137,9 @@ export class FilmeController {
     }
   }
 
-  public async excluirPensamento(id: string) {
+  public async excluirFilme(id: string) {
     try {
-      await ApiService.excluirFilme(id);
+      await ApiServiceFilmes.excluirFilme(id);
 
       this.filmes.excluirFilme(parseInt(id));
       this.atualizacaoView();
@@ -139,7 +160,7 @@ export class FilmeController {
 
   public async adicionaFilmesDaApi() {
     try {
-      const filmesApi: FilmeApi[] = await ApiService.buscarFilmes();
+      const filmesApi: FilmeApi[] = await ApiServiceFilmes.buscarFilmes();
 
       filmesApi.forEach((filme) => {
         const nome: string = filme.titulo;
@@ -185,6 +206,7 @@ export class FilmeController {
   }
 
   private atualizacaoView(): void {
+    this.filmesContainer.innerHTML = "";
     this.filmesView.update(this.filmes);
   }
 }
