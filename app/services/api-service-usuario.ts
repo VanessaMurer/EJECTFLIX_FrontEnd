@@ -1,10 +1,11 @@
 export class ApiServiceUsuario {
-  private static baseURL = "https://movies-api-juliocsoares.fly.dev/";
+  private static BASE_URL = "https://movies-api-juliocsoares.fly.dev/usuario";
 
   public static async login(username: string, password: string): Promise<any> {
     try {
+      console.log(username, password);
       const response = await axios.post(
-        `${this.baseURL}usuario/login/`,
+        `${this.BASE_URL}/login/`,
         { username, password },
         {
           headers: {
@@ -22,32 +23,67 @@ export class ApiServiceUsuario {
           `Erro no login: ${response.status} - ${response.statusText}`
         );
       }
-    } catch (error: any) {
+    } catch (error) {
+      console.log(error.response.data);
       console.error("Erro ao fazer login:", error.message);
+
+      throw error;
+    }
+  }
+
+  public static async logout() {
+    try {
+      const response = await axios.post(
+        `${this.BASE_URL}/logout/`,
+        {},
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      return await response.data;
+    } catch (error) {
+      console.log("Erro ao fazer logout");
+      console.log(error.response.data);
+      throw error;
+    }
+  }
+
+  public static async register(
+    username: string,
+    password: string
+  ): Promise<any> {
+    try {
+      const confirm_password: string = password;
+
+      const cadastro = {
+        username,
+        password,
+        confirm_password,
+      };
+
+      const response = await axios.post(
+        `${this.BASE_URL}/register/`,
+        cadastro,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        console.log("Registro realizado com sucesso:", response.data);
+        return response.data;
+      } else {
+        throw new Error(
+          `Erro no registro: ${response.status} - ${response.statusText}`
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao realizar o registro:", error.message);
+      console.log(error.response.data);
       throw error;
     }
   }
 }
-// Método para requisições autenticadas
-// public static async fetchFilmes(): Promise<any> {
-//   try {
-//     const response = await axios.get(`${this.baseURL}filmes/`, {
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       withCredentials: true, // Envia os cookies automaticamente
-//     });
-
-//     if (response.status === 200) {
-//       console.log("Dados recebidos:", response.data);
-//       return response.data;
-//     } else {
-//       throw new Error(
-//         `Erro ao buscar filmes: ${response.status} - ${response.statusText}`
-//       );
-//     }
-//   } catch (error: any) {
-//     console.error("Erro ao buscar filmes:", error.message);
-//     throw error;
-//   }
-// }

@@ -1,16 +1,17 @@
 import { FilmeController } from "./controllers/filme-controller.js";
+import { UsuarioController } from "./controllers/usuario-controller.js";
 import { Filme } from "./models/filme.js";
 import { ApiServiceFilmesApi } from "./services/api-service-filmes-api.js";
 import { ApiServiceUsuario } from "./services/api-service-usuario.js";
 
-const controller = new FilmeController();
+const controllerUsuarios = new UsuarioController();
+const controllerFilmes = new FilmeController();
 
 async function init() {
   try {
-    await ApiServiceUsuario.login("vanessa", "vanessa01");
-    console.log("Login realizado com sucesso.");
+    controllerUsuarios.loginUsuario();
 
-    await controller.adicionaFilmesDaApi();
+    await controllerFilmes.adicionaFilmesDaApi();
 
     registrarEventos();
 
@@ -32,7 +33,7 @@ function registrarEventos() {
   if (formAdd) {
     formAdd.addEventListener("submit", (event) => {
       event.preventDefault();
-      controller.adicionarFilmeFromFormulario();
+      controllerFilmes.adicionarFilmeFromFormulario();
     });
   }
 
@@ -44,7 +45,7 @@ function registrarEventos() {
         const id: string = target.getAttribute("data-id") as string;
         console.log(id);
 
-        const filmeEditar: Filme = controller.buscarFilmePeloId(id);
+        const filmeEditar: Filme = controllerFilmes.buscarFilmePeloId(id);
 
         const nomeFilmeEdit = document.querySelector(
           "#nomeFilmeEdit"
@@ -88,7 +89,7 @@ function registrarEventos() {
 
       const id: string = nomeFilmeEdit.getAttribute("data-id") as string;
 
-      controller.editandoFilmeFromFormulario(
+      controllerFilmes.editandoFilmeFromFormulario(
         id,
         nomeFilmeEdit.value,
         categoriaFilmeEdit.value,
@@ -107,7 +108,7 @@ function registrarEventos() {
 
       const id: string = nomeFilmeEdit.getAttribute("data-id") as string;
 
-      controller.excluirFilme(id);
+      controllerFilmes.excluirFilme(id);
     });
   }
 
@@ -119,7 +120,7 @@ function registrarEventos() {
       );
 
       if (categoria) {
-        controller.filtrarCategoria(categoria);
+        controllerFilmes.filtrarCategoria(categoria);
       }
     });
   });

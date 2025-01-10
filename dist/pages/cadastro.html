@@ -54,32 +54,30 @@
         <h2 class="text-white fs-5 text-center py-4 m-0">
           Bem-vindo(a) à EJECTFLIX
         </h2>
-        <form>
+        <form id="cadastro-form">
           <p class="text-white mb-1">Cadastre-se</p>
           <div class="form-floating mb-5">
             <input
-              type="email"
+              type="text"
               class="form-control input-form border-0"
-              id="floatingEmail"
+              id="usernameCadastro"
               placeholder="Email or phone number"
             />
-            <label class="label-form" for="floatingEmail"
-              >Email or phone number</label
-            >
+            <label class="label-form" for="usernameCadastro">Username</label>
           </div>
 
           <div class="form-floating mb-3">
             <input
               type="password"
               class="form-control input-form border-0"
-              id="floatingPassword"
+              id="passwordCadastro"
               placeholder="Password"
             />
-            <label class="label-form" for="floatingPassword">Password</label>
+            <label class="label-form" for="passwordCadastro">Password</label>
           </div>
 
-          <button type="button" class="btn btn-entrar w-100 my-5 py-3">
-            Entrar
+          <button type="submit" class="btn btn-entrar w-100 my-5 py-3">
+            Cadastrar
           </button>
         </form>
       </div>

@@ -8,14 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { FilmeController } from "./controllers/filme-controller.js";
-import { ApiServiceUsuario } from "./services/api-service-usuario.js";
-const controller = new FilmeController();
+import { UsuarioController } from "./controllers/usuario-controller.js";
+const controllerUsuarios = new UsuarioController();
+const controllerFilmes = new FilmeController();
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield ApiServiceUsuario.login("vanessa", "vanessa01");
-            console.log("Login realizado com sucesso.");
-            yield controller.adicionaFilmesDaApi();
+            controllerUsuarios.loginUsuario();
+            yield controllerFilmes.adicionaFilmesDaApi();
             registrarEventos();
             console.log("Aplicação inicializada.");
         }
@@ -33,7 +33,7 @@ function registrarEventos() {
     if (formAdd) {
         formAdd.addEventListener("submit", (event) => {
             event.preventDefault();
-            controller.adicionarFilmeFromFormulario();
+            controllerFilmes.adicionarFilmeFromFormulario();
         });
     }
     if (containerFilmes) {
@@ -42,7 +42,7 @@ function registrarEventos() {
             if (target.classList.contains("btnPlusEdit")) {
                 const id = target.getAttribute("data-id");
                 console.log(id);
-                const filmeEditar = controller.buscarFilmePeloId(id);
+                const filmeEditar = controllerFilmes.buscarFilmePeloId(id);
                 const nomeFilmeEdit = document.querySelector("#nomeFilmeEdit");
                 const categoriaFilmeEdit = document.querySelector("#categoriaFilmeEdit");
                 const anoFilmeEdit = document.querySelector("#anoFilmeEdit");
@@ -67,7 +67,7 @@ function registrarEventos() {
             const anoFilmeEdit = document.querySelector("#anoFilmeEdit");
             const posterFilmeEdit = document.querySelector("#editImagem");
             const id = nomeFilmeEdit.getAttribute("data-id");
-            controller.editandoFilmeFromFormulario(id, nomeFilmeEdit.value, categoriaFilmeEdit.value, anoFilmeEdit.value, (_a = posterFilmeEdit.files) === null || _a === void 0 ? void 0 : _a[0]);
+            controllerFilmes.editandoFilmeFromFormulario(id, nomeFilmeEdit.value, categoriaFilmeEdit.value, anoFilmeEdit.value, (_a = posterFilmeEdit.files) === null || _a === void 0 ? void 0 : _a[0]);
         });
     }
     if (btnExcluir) {
@@ -75,7 +75,7 @@ function registrarEventos() {
             event.preventDefault();
             const nomeFilmeEdit = document.querySelector("#nomeFilmeEdit");
             const id = nomeFilmeEdit.getAttribute("data-id");
-            controller.excluirFilme(id);
+            controllerFilmes.excluirFilme(id);
         });
     }
     btnsCategorias.forEach((btn) => {
@@ -83,7 +83,7 @@ function registrarEventos() {
             event.preventDefault();
             const categoria = event.currentTarget.getAttribute("data-category");
             if (categoria) {
-                controller.filtrarCategoria(categoria);
+                controllerFilmes.filtrarCategoria(categoria);
             }
         });
     });

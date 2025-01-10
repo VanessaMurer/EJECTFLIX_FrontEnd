@@ -3,6 +3,7 @@ import { Filmes } from "../models/filmes.js";
 import { ApiServiceFilmesApi } from "../services/api-service-filmes-api.js";
 import { FilmesView } from "../views/filmes-view.js";
 import { MensagemView } from "../views/mensagem-view.js";
+import { UsuarioController } from "./usuario-controller.js";
 
 export class FilmeController {
   private inputNome: HTMLInputElement;
@@ -10,6 +11,7 @@ export class FilmeController {
   private inputAno: HTMLInputElement;
   private inputImagem: HTMLInputElement;
   private filmesContainer: HTMLElement;
+  private btnLogout: HTMLElement;
 
   private filmes = new Filmes();
   private filmesView = new FilmesView("#filmes-container");
@@ -31,6 +33,15 @@ export class FilmeController {
     this.filmesContainer = document.querySelector(
       "#filmes-container"
     ) as HTMLElement;
+
+    this.btnLogout = document.querySelector("#btnLogout") as HTMLElement;
+
+    if (this.btnLogout) {
+      this.btnLogout.addEventListener(
+        "click",
+        UsuarioController.logoutUsuario.bind(this)
+      );
+    }
   }
 
   public async adicionarFilmeFromFormulario() {

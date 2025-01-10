@@ -11,7 +11,8 @@ export class ApiServiceUsuario {
     static login(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield axios.post(`${this.baseURL}usuario/login/`, { username, password }, {
+                console.log(username, password);
+                const response = yield axios.post(`${this.BASE_URL}/login/`, { username, password }, {
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -26,10 +27,56 @@ export class ApiServiceUsuario {
                 }
             }
             catch (error) {
+                console.log(error.response.data);
                 console.error("Erro ao fazer login:", error.message);
                 throw error;
             }
         });
     }
+    static logout() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield axios.post(`${this.BASE_URL}/logout/`, {}, {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                });
+                return yield response.data;
+            }
+            catch (error) {
+                console.log("Erro ao fazer logout");
+                console.log(error.response.data);
+                throw error;
+            }
+        });
+    }
+    static register(username, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const confirm_password = password;
+                const cadastro = {
+                    username,
+                    password,
+                    confirm_password,
+                };
+                const response = yield axios.post(`${this.BASE_URL}/register/`, cadastro, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (response.status === 201) {
+                    console.log("Registro realizado com sucesso:", response.data);
+                    return response.data;
+                }
+                else {
+                    throw new Error(`Erro no registro: ${response.status} - ${response.statusText}`);
+                }
+            }
+            catch (error) {
+                console.error("Erro ao realizar o registro:", error.message);
+                console.log(error.response.data);
+                throw error;
+            }
+        });
+    }
 }
-ApiServiceUsuario.baseURL = "https://movies-api-juliocsoares.fly.dev/";
+ApiServiceUsuario.BASE_URL = "https://movies-api-juliocsoares.fly.dev/usuario";

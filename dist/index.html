@@ -30,389 +30,61 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="../css/loginCadastro.css" />
+    <link rel="stylesheet" href="../css/index.css" />
 
-    <title>EJECTFLIX</title>
+    <title>EJECTFLIX | Login</title>
   </head>
-  <body class="fundo-escuro">
-    <header>
-      <nav class="navbar navbar-expand-md p-0">
-        <div class="container container-nav">
-          <div class="nav-mobile">
-            <a href="index.html"
-              ><img
-                class="logo-img"
-                src="./img/Logo_EJECTFLIX.png"
-                alt="Logo EJECTFLIX"
-            /></a>
-
-            <!-- Botão responsivo -->
-            <div class="d-md-none dropdown">
-              <button
-                class="btn dropdown-toggle text-white btn-menu"
-                type="button"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Menu
-              </button>
-
-              <!-- Links do Dropdown -->
-              <ul
-                class="dropdown-menu menu-dw-bg"
-                aria-labelledby="dropdownMenuButton"
-              >
-                <li><a class="link-menu btn-inicio" href="#">Início</a></li>
-                <li>
-                  <a
-                    class="link-menu"
-                    data-bs-toggle="collapse"
-                    href="#navCategorias"
-                    role="button"
-                    aria-expanded="false"
-                    aria-controls="navCategorias"
-                    href="#"
-                    >Categorias</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="link-menu"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalAddFilme"
-                    href="#"
-                    >Adicionar Filmes</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Links para telas grandes -->
-          <div class="collapse navbar-collapse d-none d-md">
-            <ul
-              class="navbar-nav w-100 d-flex justify-content-center nav-principal"
-            >
-              <li class="nav-item">
-                <a class="nav-link text-white btn-inicio" href="index.html"
-                  >Início</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link text-white"
-                  data-bs-toggle="collapse"
-                  href="#navCategorias"
-                  role="button"
-                  aria-expanded="false"
-                  aria-controls="navCategorias"
-                  href="#"
-                  >Categorias</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link text-white rounded btn-add-filmes"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalAddFilme"
-                  href="#"
-                  >Adicionar Filmes</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <img class="px-2" src="./img/EJECTICONE_FUNDO_ESCURO.png" alt="" />
-          </div>
+  <body class="d-flex flex-column min-vh-100">
+    <header class="container">
+      <nav class="navbar p-0 login-nav-bg">
+        <div class="container">
+          <a class="logo-link" href="#"
+            ><h1>
+              <img src="../img/Logo_EJECTFLIX.png" alt="Logo EJECTFLIX" /></h1
+          ></a>
         </div>
       </nav>
     </header>
 
-    <section class="bg-black collapse" id="navCategorias">
-      <div class="container-nav-categorias">
-        <ul
-          class="nav justify-content-center align-items-center nav-categorias"
-        >
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#" data-category="Ação, Action"
-              ><span class="link-categoria">Ação</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link text-white"
-              href="#"
-              data-category="Aventura, Adventure"
-              ><span class="link-categoria">Aventura</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link text-white"
-              href="#"
-              data-category="Comédia, Comedy"
-              ><span class="link-categoria">Comédia</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#" data-category="Drama"
-              ><span class="link-categoria">Drama</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link text-white"
-              href="#"
-              data-category="Suspense, Thriller"
-              ><span class="link-categoria">Suspense</span></a
-            >
-          </li>
-        </ul>
-      </div>
-    </section>
+    <main
+      class="d-flex flex-column flex-grow-1 justify-content-center align-items-center my-5"
+    >
+      <div class="card login-card">
+        <h2 class="text-white fs-5 text-center py-4 m-0">
+          Bem-vindo(a) à EJECTFLIX
+        </h2>
+        <form id="login-form">
+          <p class="text-white mb-1">Entrar</p>
+          <div class="form-floating mb-5">
+            <input
+              type="text"
+              class="form-control input-form border-0"
+              id="inputUsername"
+              placeholder="Email or phone number"
+            />
+            <label class="label-form" for="inputEmail">Username</label>
+          </div>
 
-    <main class="filmes-section" id="filmes-container">
-      <div class="card card-filme">
-        <div>
-          <i
-            class="bi bi-plus-square-fill card-icon btnPlusEdit"
-            data-id="xxx"
-            type="button"
-            data-bs-toggle="modal"
-            data-bs-target="#modalEditFilme"
-          ></i>
-        </div>
-        <div>
-          <div class="container-poster">
-            <img
-              class="card-poster"
-              src="./img/percy.png"
-              alt="Poster do filme percy"
+          <div class="form-floating mb-3">
+            <input
+              type="password"
+              class="form-control input-form border-0"
+              id="inputPassword"
+              placeholder="Password"
             />
+            <label class="label-form" for="inputPassword">Password</label>
           </div>
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
+
+          <button type="submit" class="btn btn-entrar w-100 my-5 py-3">
+            Entrar
+          </button>
+        </form>
+
+        <a class="link-cadastro text-center" href="./pages/cadastro.html"
+          >Cadastrar-se</a
+        >
       </div>
-      <div class="card card-filme">
-        <div>
-          <i
-            class="bi bi-plus-square-fill card-icon btnPlusEdit"
-            data-id="xxx"
-            type="button"
-            data-bs-toggle="modal"
-            data-bs-target="#modalEditFilme"
-          ></i>
-        </div>
-        <div>
-          <div class="container-poster">
-            <img
-              class="card-poster"
-              src="./img/potter.jpg"
-              alt="Poster do filme percy"
-            />
-          </div>
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="card card-filme">
-        <i
-          class="bi bi-plus-square-fill card-icon btnPlusEdit"
-          data-id="xxx"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalEditFilme"
-        ></i>
-        <div>
-          <img
-            class="card-poster"
-            src="./img/percy.png"
-            alt="Poster do filme percy"
-          />
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Ação</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div>
-      <div class="card card-filme">
-        <i
-          class="bi bi-plus-square-fill card-icon btnPlusEdit"
-          data-id="xxx"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalEditFilme"
-        ></i>
-        <div>
-          <img
-            class="card-poster"
-            src="./img/percy.png"
-            alt="Poster do filme percy"
-          />
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura, Ação</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div>
-      <div class="card card-filme">
-        <i
-          class="bi bi-plus-square-fill card-icon btnPlusEdit"
-          data-id="xxx"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalEditFilme"
-        ></i>
-        <div>
-          <img
-            class="card-poster"
-            src="./img/percy.png"
-            alt="Poster do filme percy"
-          />
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div>
-      <div class="card card-filme">
-        <i
-          class="bi bi-plus-square-fill card-icon btnPlusEdit"
-          data-id="xxx"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalEditFilme"
-        ></i>
-        <div>
-          <img
-            class="card-poster"
-            src="./img/percy.png"
-            alt="Poster do filme percy"
-          />
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura, Ação</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div>
-      <div class="card card-filme">
-        <i
-          class="bi bi-plus-square-fill card-icon btnPlusEdit"
-          data-id="xxx"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalEditFilme"
-        ></i>
-        <div>
-          <img
-            class="card-poster"
-            src="./img/percy.png"
-            alt="Poster do filme percy"
-          />
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura, Ação</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div>
-      <div class="card card-filme">
-        <i
-          class="bi bi-plus-square-fill card-icon btnPlusEdit"
-          data-id="xxx"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalEditFilme"
-        ></i>
-        <div>
-          <img
-            class="card-poster"
-            src="./img/percy.png"
-            alt="Poster do filme percy"
-          />
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura, Ação</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div>
-      <div class="card card-filme">
-        <i
-          class="bi bi-plus-square-fill card-icon btnPlusEdit"
-          data-id="xxx"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalEditFilme"
-        ></i>
-        <div>
-          <img
-            class="card-poster"
-            src="./img/percy.png"
-            alt="Poster do filme percy"
-          />
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura, Ação</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div>
-      <div class="card card-filme">
-        <i
-          class="bi bi-plus-square-fill card-icon btnPlusEdit"
-          data-id="xxx"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalEditFilme"
-        ></i>
-        <div>
-          <img
-            class="card-poster"
-            src="./img/percy.png"
-            alt="Poster do filme percy"
-          />
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura, Ação</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div>
-      <div class="card card-filme">
-        <i
-          class="bi bi-plus-square-fill card-icon btnPlusEdit"
-          data-id="xxx"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalEditFilme"
-        ></i>
-        <div>
-          <img
-            class="card-poster"
-            src="./img/percy.png"
-            alt="Poster do filme percy"
-          />
-          <div class="card-body-overlay text-center text-white">
-            <h5 class="card-titulo">Percy Jackson</h5>
-            <p class="card-categoria">Aventura, Ação</p>
-            <p class="card-ano">2007</p>
-          </div>
-        </div>
-      </div> -->
     </main>
 
     <footer class="text-center bg-black text-white py-4">
@@ -430,184 +102,6 @@
         | EJECT
       </p>
     </footer>
-
-    <!-- MODAL ADD -->
-    <div
-      class="modal fade"
-      id="modalAddFilme"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-5 modal-bg text-white">
-          <i
-            class="bi bi-x-lg align-self-end"
-            data-bs-dismiss="modal"
-            type="button"
-          ></i>
-          <div class="mensagemViewAdd"></div>
-          <div class="text-center">
-            <h1 class="modal-title fs-5 mb-3" id="exampleModalLabel">
-              Adicionar Filme à lista:
-            </h1>
-          </div>
-          <div class="modal-body">
-            <form id="form-add">
-              <div class="row row-gap-5">
-                <div class="col-6">
-                  <label class="form-label titulos-form"
-                    >Adicione uma imagem</label
-                  >
-                  <label for="imagemFilmeAdd" class="input-add-file">
-                    <i class="bi bi-arrow-bar-up me-2"></i>
-                    Adicione arquivo
-                  </label>
-                  <input type="file" class="form-control" id="imagemFilmeAdd" />
-                </div>
-
-                <div class="col-6">
-                  <label for="nomeFilmeAdd" class="form-label titulos-form"
-                    >Nome do filme</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control input-nome-filme"
-                    id="nomeFilmeAdd"
-                    placeholder="inserir..."
-                  />
-                </div>
-
-                <div class="col-6">
-                  <label for="categoriaFilmeAdd" class="form-label titulos-form"
-                    >Categoria</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control input-nome-filme"
-                    id="categoriaFilmeAdd"
-                    placeholder="inserir..."
-                  />
-                </div>
-
-                <div class="col-6">
-                  <label for="anoFilmeAdd" class="form-label titulos-form"
-                    >Ano de lançamento</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control input-nome-filme"
-                    id="anoFilmeAdd"
-                    placeholder="XX/XX/XXXX"
-                  />
-                </div>
-              </div>
-
-              <div class="text-center mt-5">
-                <button type="submit" class="btn-modal-add text-white">
-                  Adicionar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MODAL EDIT -->
-    <div
-      class="modal fade"
-      id="modalEditFilme"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-5 modal-bg text-white">
-          <i
-            class="bi bi-x-lg align-self-end"
-            data-bs-dismiss="modal"
-            type="button"
-          ></i>
-          <div class="mensagemViewEdit"></div>
-          <div class="text-center">
-            <h1 class="modal-title fs-5 mb-3" id="exampleModalLabel">
-              Edite informações do filme:
-            </h1>
-          </div>
-          <div class="modal-body">
-            <form id="form-edit">
-              <div class="row row-gap-4">
-                <div class="col-6">
-                  <label class="form-label titulos-form">Altere a imagem</label>
-                  <label for="editImagem" class="input-add-file">
-                    <i class="bi bi-arrow-bar-up me-2"></i>
-                    Adicione arquivo
-                  </label>
-                  <input type="file" class="form-control" id="editImagem" />
-                </div>
-
-                <div class="col-6">
-                  <label for="nomeFilmeEdit" class="form-label titulos-form"
-                    >Nome do filme</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control input-nome-filme"
-                    id="nomeFilmeEdit"
-                    placeholder="inserir..."
-                  />
-                </div>
-
-                <div class="col-6">
-                  <label
-                    for="categoriaFilmeEdit"
-                    class="form-label titulos-form"
-                    >Categoria</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control input-nome-filme"
-                    id="categoriaFilmeEdit"
-                    placeholder="inserir..."
-                  />
-                </div>
-
-                <div class="col-6">
-                  <label for="anoFilmeEdit" class="form-label titulos-form"
-                    >Ano de lançamento</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control input-nome-filme"
-                    id="anoFilmeEdit"
-                    placeholder="XX/XX/XXXX"
-                  />
-                </div>
-              </div>
-
-              <div class="d-flex mt-5 btns-modal-gap">
-                <button
-                  type="submit"
-                  id="salvar-edicao"
-                  class="btn-modal-edit text-white"
-                >
-                  Salvar
-                </button>
-                <button
-                  type="delete"
-                  class="btn-modal-edit btn-modal-excluir text-white"
-                >
-                  Excluir
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <a href="./pages/login.html">Login</a>
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
 

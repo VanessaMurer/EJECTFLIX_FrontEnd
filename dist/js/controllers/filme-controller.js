@@ -12,6 +12,7 @@ import { Filmes } from "../models/filmes.js";
 import { ApiServiceFilmesApi } from "../services/api-service-filmes-api.js";
 import { FilmesView } from "../views/filmes-view.js";
 import { MensagemView } from "../views/mensagem-view.js";
+import { UsuarioController } from "./usuario-controller.js";
 export class FilmeController {
     constructor() {
         this.filmes = new Filmes();
@@ -23,6 +24,10 @@ export class FilmeController {
         this.inputAno = document.querySelector("#anoFilmeAdd");
         this.inputImagem = document.querySelector("#imagemFilmeAdd");
         this.filmesContainer = document.querySelector("#filmes-container");
+        this.btnLogout = document.querySelector("#btnLogout");
+        if (this.btnLogout) {
+            this.btnLogout.addEventListener("click", UsuarioController.logoutUsuario.bind(this));
+        }
     }
     adicionarFilmeFromFormulario() {
         var _a;
