@@ -19,10 +19,6 @@ if (formAdd) {
     event.preventDefault();
     controller.adicionarFilmeFromFormulario();
   });
-} else {
-  console.log(
-    "Não foi possível adicionar o filme. Verifique se o form existe."
-  );
 }
 
 if (containerFilmes) {

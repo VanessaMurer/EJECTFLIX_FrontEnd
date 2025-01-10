@@ -12,9 +12,6 @@ if (formAdd) {
         controller.adicionarFilmeFromFormulario();
     });
 }
-else {
-    console.log("Não foi possível adicionar o filme. Verifique se o form existe.");
-}
 if (containerFilmes) {
     containerFilmes.addEventListener("click", (event) => {
         const target = event.target;

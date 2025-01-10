@@ -14,7 +14,9 @@ export class FilmesView extends View<Filmes> {
             type="button"
           ></i>
           <div >
-            <img src="${filme.imagem}" alt="Poster do filme ${filme.nome}" />
+            <img class="card-poster" src="${
+              filme.imagem
+            }" alt="Poster do filme ${filme.nome}" />
             <div class="card-body-overlay text-center text-white">
               <h5 class="card-titulo">${filme.nome}</h5>
               <p class="card-categoria">${filme.categoria.join(", ")}</p>

@@ -26,34 +26,18 @@ export class FilmeController {
     }
     adicionarFilmeFromFormulario() {
         return __awaiter(this, void 0, void 0, function* () {
-            const titulo = this.inputNome.value;
-            const descricao = "";
-            const ano_lancamento = parseInt(this.inputAno.value);
-            const duracao = "";
+            const anoLancamento = parseInt(this.inputAno.value);
             const genero = this.inputCategoria.value;
-            const classificacao_etaria = "";
-            const idioma_original = "";
-            const data_estreia = "";
-            const avaliacao_media = "";
-            const poster = this.getUrlImagem();
-            const filme = {
-                titulo,
-                descricao,
-                ano_lancamento,
-                duracao,
-                genero,
-                classificacao_etaria,
-                idioma_original,
-                data_estreia,
-                avaliacao_media,
-                poster,
-            };
+            const poster = "./img/potter.jpg";
+            const gerarId = () => Math.floor(Math.random() * 1000000).toString();
+            const id = gerarId();
+            const filme = this.criarObjetoFilme(this.inputNome.value, "", anoLancamento, "", this.inputCategoria.value, "", "", "", "", poster, id);
             try {
-                const filmeSalvo = yield ApiServiceFilmes.salvarFilme(filme);
+                yield ApiServiceFilmes.salvarFilme(filme);
                 const categorias = genero
                     .split(",")
                     .map((categoria) => categoria.trim());
-                const novoFilme = new Filme(titulo, categorias, ano_lancamento, poster, filmeSalvo.id);
+                const novoFilme = new Filme(this.inputNome.value, categorias, anoLancamento, poster, parseInt(id));
                 this.filmes.adiciona(novoFilme);
                 this.mensagemViewAdd.update("Filme adicionada com sucesso!", 3000);
                 this.atualizacaoView();
@@ -66,35 +50,15 @@ export class FilmeController {
     }
     editandoFilmeFromFormulario(id, tituloEditado, categoriaEditada, anoEditado) {
         return __awaiter(this, void 0, void 0, function* () {
-            const filmeOriginal = yield ApiServiceFilmes.buscarFilmeByID(id);
-            const titulo = tituloEditado;
-            const descricao = filmeOriginal.descricao;
-            const ano_lancamento = parseInt(anoEditado);
-            const duracao = filmeOriginal.duracao;
-            const genero = categoriaEditada;
-            const classificacao_etaria = filmeOriginal.classificacao_etaria;
-            const idioma_original = filmeOriginal.idioma_original;
-            const data_estreia = filmeOriginal.data_estreia;
-            const avaliacao_media = filmeOriginal.avaliacao_media;
-            const poster = "./img/percy.png";
-            const filme = {
-                titulo,
-                descricao,
-                ano_lancamento,
-                duracao,
-                genero,
-                classificacao_etaria,
-                idioma_original,
-                data_estreia,
-                avaliacao_media,
-                poster,
-            };
             try {
-                yield ApiServiceFilmes.atualizarFilme(id, filme);
+                const filmeOriginal = yield ApiServiceFilmes.buscarFilmeByID(id);
+                const anoLancamento = parseInt(anoEditado);
                 const categorias = categoriaEditada
                     .split(",")
                     .map((categoria) => categoria.trim());
-                this.filmes.atualizaFilme(parseInt(id), titulo, categorias, ano_lancamento, poster);
+                const filmeAtualizado = Object.assign(Object.assign({}, filmeOriginal), { titulo: tituloEditado, genero: categoriaEditada, ano_lancamento: parseInt(anoEditado) });
+                yield ApiServiceFilmes.atualizarFilme(id, filmeAtualizado);
+                this.filmes.atualizaFilme(parseInt(id), tituloEditado, categorias, anoLancamento, filmeOriginal.poster);
                 this.atualizacaoView();
                 this.mensagemViewEdit.update("Filme editado com sucesso!", 3000);
             }
@@ -135,7 +99,7 @@ export class FilmeController {
                         .split(",")
                         .map((categoria) => categoria.trim());
                     const ano = filme.ano_lancamento;
-                    const poster = "./img/percy.png";
+                    const poster = filme.poster;
                     const id = Number(filme.id);
                     const novoFilme = new Filme(nome, categoria, ano, poster, id);
                     this.filmes.adiciona(novoFilme);
@@ -149,18 +113,38 @@ export class FilmeController {
         const filmesFiltrados = this.filmes.filtrar(categoria);
         this.filmesView.update(filmesFiltrados);
     }
+    criarObjetoFilme(titulo, descricao, anoLancamento, duracao, genero, classificacaoEtaria, idiomaOriginal, dataEstreia, avaliacaoMedia, poster, id) {
+        const filme = {
+            titulo,
+            descricao,
+            anoLancamento,
+            duracao,
+            genero,
+            classificacaoEtaria,
+            idiomaOriginal,
+            dataEstreia,
+            avaliacaoMedia,
+            poster,
+            id,
+        };
+        return filme;
+    }
     getUrlImagem() {
-        let imagemUrl = "./img/percy.png";
-        if (this.inputImagem.files && this.inputImagem.files[0]) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                imagemUrl = reader.result;
-            };
-            return imagemUrl;
-        }
-        else {
-            return imagemUrl;
-        }
+        return new Promise((resolve, reject) => {
+            let imagemUrl = "./img/potter.jpg";
+            if (this.inputImagem.files && this.inputImagem.files[0]) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    imagemUrl = reader.result;
+                    resolve(imagemUrl);
+                };
+                reader.onerror = () => reject("Erro ao ler arquivo");
+                reader.readAsDataURL(this.inputImagem.files[0]);
+            }
+            else {
+                resolve(imagemUrl);
+            }
+        });
     }
     limparFormulario() {
         this.inputNome.value = "";
