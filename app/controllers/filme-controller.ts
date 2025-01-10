@@ -1,6 +1,6 @@
 import { Filme } from "../models/filme.js";
 import { Filmes } from "../models/filmes.js";
-import { ApiServiceFilmes } from "../services/api-service-filmes.js";
+import { ApiServiceFilmesApi } from "../services/api-service-filmes-api.js";
 import { FilmesView } from "../views/filmes-view.js";
 import { MensagemView } from "../views/mensagem-view.js";
 
@@ -34,31 +34,34 @@ export class FilmeController {
   }
 
   public async adicionarFilmeFromFormulario() {
-    const anoLancamento = parseInt(this.inputAno.value);
+    const titulo = this.inputNome.value.trim();
+    const ano_lancamento = parseInt(this.inputAno.value.trim());
+    const genero = this.inputCategoria.value.trim();
+    const file = this.inputImagem.files?.[0];
 
-    const genero = this.inputCategoria.value;
+    if (!titulo || !ano_lancamento || !genero || !file) {
+      this.mensagemViewAdd.update(
+        "Por favor, preencha todos os campos obrigatórios.",
+        3000
+      );
+      return;
+    }
 
-    const poster = "./img/potter.jpg";
-
-    const gerarId = () => Math.floor(Math.random() * 1000000).toString();
-    const id = gerarId();
-
-    const filme = this.criarObjetoFilme(
-      this.inputNome.value,
-      "",
-      anoLancamento,
-      "",
-      this.inputCategoria.value,
-      "",
-      "",
-      "",
-      "",
-      poster,
-      id
-    );
+    const formData = new FormData();
+    formData.append("titulo", titulo);
+    formData.append("descricao", "Descrição padrão");
+    formData.append("ano_lancamento", ano_lancamento.toString());
+    formData.append("duracao", "01:30:00");
+    formData.append("genero", genero);
+    formData.append("classificacao_etaria", "Livre");
+    formData.append("idioma_original", "en");
+    formData.append("data_estreia", "2021-09-11");
+    formData.append("avaliacao_media", "7.0");
+    formData.append("poster", file);
 
     try {
-      await ApiServiceFilmes.salvarFilme(filme);
+      const filmeAdicionado = await ApiServiceFilmesApi.salvarFilme(formData);
+      console.log(filmeAdicionado);
 
       const categorias: string[] = genero
         .split(",")
@@ -67,9 +70,9 @@ export class FilmeController {
       const novoFilme = new Filme(
         this.inputNome.value,
         categorias,
-        anoLancamento,
-        poster,
-        parseInt(id)
+        ano_lancamento,
+        filmeAdicionado.poster,
+        filmeAdicionado.id
       );
 
       this.filmes.adiciona(novoFilme);
@@ -80,6 +83,7 @@ export class FilmeController {
       this.limparFormulario();
     } catch (error) {
       this.mensagemViewAdd.update("Erro ao adicionar filme", 3000);
+      console.error("Erro ao adicionar filme:", error);
     }
   }
 
@@ -87,11 +91,12 @@ export class FilmeController {
     id: string,
     tituloEditado: string,
     categoriaEditada: string,
-    anoEditado: string
+    anoEditado: string,
+    posterArquivo: File | undefined
   ) {
     try {
-      const filmeOriginal: FilmeApi = await ApiServiceFilmes.buscarFilmeByID(
-        id
+      const filmeOriginal: FilmeApi = await ApiServiceFilmesApi.buscarFilmeByID(
+        parseInt(id)
       );
 
       const anoLancamento = parseInt(anoEditado);
@@ -99,14 +104,28 @@ export class FilmeController {
         .split(",")
         .map((categoria) => categoria.trim());
 
-      const filmeAtualizado = {
-        ...filmeOriginal,
-        titulo: tituloEditado,
-        genero: categoriaEditada,
-        ano_lancamento: parseInt(anoEditado),
-      };
+      const filmeAtualizado = new FormData();
+      filmeAtualizado.append("titulo", tituloEditado);
+      filmeAtualizado.append("genero", categoriaEditada);
+      filmeAtualizado.append("ano_lancamento", anoLancamento.toString());
 
-      await ApiServiceFilmes.atualizarFilme(id, filmeAtualizado);
+      filmeAtualizado.append("descricao", filmeOriginal.descricao || "");
+      filmeAtualizado.append("duracao", filmeOriginal.duracao || "");
+      filmeAtualizado.append(
+        "classificacao_etaria",
+        filmeOriginal.classificacao_etaria || ""
+      );
+      filmeAtualizado.append(
+        "idioma_original",
+        filmeOriginal.idioma_original || ""
+      );
+      filmeAtualizado.append("data_estreia", filmeOriginal.data_estreia || "");
+
+      if (posterArquivo) {
+        filmeAtualizado.append("poster", posterArquivo);
+      }
+
+      await ApiServiceFilmesApi.atualizarFilme(parseInt(id), filmeAtualizado);
 
       this.filmes.atualizaFilme(
         parseInt(id),
@@ -126,7 +145,7 @@ export class FilmeController {
 
   public async excluirFilme(id: string) {
     try {
-      await ApiServiceFilmes.excluirFilme(id);
+      await ApiServiceFilmesApi.excluirFilme(parseInt(id));
 
       this.filmes.excluirFilme(parseInt(id));
       this.atualizacaoView();
@@ -147,7 +166,8 @@ export class FilmeController {
 
   public async adicionaFilmesDaApi() {
     try {
-      const filmesApi: FilmeApi[] = await ApiServiceFilmes.buscarFilmes();
+      const respostaApi: RespostaApi = await ApiServiceFilmesApi.buscarFilmes();
+      const filmesApi: FilmeApi[] = respostaApi.results;
 
       filmesApi.forEach((filme) => {
         const nome: string = filme.titulo;
@@ -156,69 +176,21 @@ export class FilmeController {
           .map((categoria) => categoria.trim());
         const ano: number = filme.ano_lancamento;
         const poster: string = filme.poster;
-        const id: number = Number(filme.id);
+        const id: number = filme.id;
 
         const novoFilme = new Filme(nome, categoria, ano, poster, id);
         this.filmes.adiciona(novoFilme);
       });
 
       this.atualizacaoView();
-    } catch (error) {}
+    } catch (error) {
+      console.error("Erro ao adicionar filmes:", error);
+    }
   }
 
   public filtrarCategoria(categoria: string): void {
     const filmesFiltrados = this.filmes.filtrar(categoria);
     this.filmesView.update(filmesFiltrados);
-  }
-
-  private criarObjetoFilme(
-    titulo: string,
-    descricao: string,
-    anoLancamento: number,
-    duracao: string,
-    genero: string,
-    classificacaoEtaria: string,
-    idiomaOriginal: string,
-    dataEstreia: string,
-    avaliacaoMedia: string,
-    poster: string,
-    id?: string
-  ): object {
-    const filme = {
-      titulo,
-      descricao,
-      anoLancamento,
-      duracao,
-      genero,
-      classificacaoEtaria,
-      idiomaOriginal,
-      dataEstreia,
-      avaliacaoMedia,
-      poster,
-      id,
-    };
-
-    return filme;
-  }
-
-  private getUrlImagem(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      let imagemUrl = "./img/potter.jpg";
-
-      if (this.inputImagem.files && this.inputImagem.files[0]) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          imagemUrl = reader.result as string;
-          resolve(imagemUrl);
-        };
-
-        reader.onerror = () => reject("Erro ao ler arquivo");
-
-        reader.readAsDataURL(this.inputImagem.files[0]);
-      } else {
-        resolve(imagemUrl);
-      }
-    });
   }
 
   private limparFormulario(): void {

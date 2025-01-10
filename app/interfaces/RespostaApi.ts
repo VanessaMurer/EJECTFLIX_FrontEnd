@@ -1,0 +1,3 @@
+interface RespostaApi {
+  results: FilmeApi[];
+}

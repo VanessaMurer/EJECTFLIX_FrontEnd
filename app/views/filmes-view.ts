@@ -12,6 +12,8 @@ export class FilmesView extends View<Filmes> {
             class="bi bi-plus-square-fill card-icon btnPlusEdit"
             data-id="${filme.id}"
             type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#modalEditFilme"
           ></i>
           <div >
             <img class="card-poster" src="${
