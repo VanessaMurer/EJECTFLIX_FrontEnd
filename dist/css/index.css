@@ -243,6 +243,21 @@ footer {
     gap: 15px;
     font-size: 13px;
   }
+
+  /* MODALS */
+  .input-add-file,
+  .btn-modal-add,
+  .btn-modal-edit,
+  .input-nome-filme {
+    width: 160px;
+    padding: 6px 6px;
+  }
+
+  .modal-container {
+    width: 90%;
+    margin: auto;
+    padding: 15px !important;
+  }
 }
 
 @media (max-width: 453px) {
@@ -255,6 +270,23 @@ footer {
   .nav-categorias {
     gap: 5px;
     font-size: 13px;
+  }
+
+  /* MODALS */
+  .form-mobile {
+    display: block;
+    margin: auto;
+  }
+
+  .input-add-file,
+  .input-nome-filme,
+  .col-6 {
+    width: 100%;
+  }
+
+  .btn-modal-add,
+  .btn-modal-edit {
+    width: 90%;
   }
 }
 
