@@ -3,7 +3,6 @@ export class ApiServiceUsuario {
 
   public static async login(username: string, password: string): Promise<any> {
     try {
-      console.log(username, password);
       const response = await axios.post(
         `${this.BASE_URL}/login/`,
         { username, password },
@@ -55,34 +54,32 @@ export class ApiServiceUsuario {
   ): Promise<any> {
     try {
       const confirm_password: string = password;
-
-      const cadastro = {
-        username,
-        password,
-        confirm_password,
-      };
+      const email: string = username + "@gmail.com";
 
       const response = await axios.post(
         `${this.BASE_URL}/register/`,
-        cadastro,
+        {
+          username,
+          email,
+          password,
+          confirm_password,
+        },
         {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
 
-      if (response.status === 201) {
-        console.log("Registro realizado com sucesso:", response.data);
-        return response.data;
-      } else {
-        throw new Error(
-          `Erro no registro: ${response.status} - ${response.statusText}`
-        );
-      }
+      return response.data;
     } catch (error) {
-      console.error("Erro ao realizar o registro:", error.message);
-      console.log(error.response.data);
+      console.error("Erro ao realizar o registro:", error);
+
+      if (error.response) {
+        console.error("Status do erro:", error.response.status);
+        console.error("Dados do erro:", error.response.data);
+      }
       throw error;
     }
   }

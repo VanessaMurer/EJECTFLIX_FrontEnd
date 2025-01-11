@@ -49,7 +49,6 @@ body {
 }
 
 /* MODAL ADD */
-
 .modal-bg {
   background-color: var(--amarelo-2);
 }
@@ -108,7 +107,7 @@ input[type="file"] {
   color: #ffffff;
 }
 
-/* entrar */
+/* BUTTONS */
 
 .btn-entrar,
 .btn-modal-add:hover,

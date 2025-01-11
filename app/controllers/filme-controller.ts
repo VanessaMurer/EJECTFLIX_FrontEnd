@@ -1,20 +1,22 @@
 import { Filme } from "../models/filme.js";
 import { Filmes } from "../models/filmes.js";
-import { ApiServiceFilmesApi } from "../services/api-service-filmes-api.js";
+import { ApiServiceFilmes } from "../services/api-service-filmes.js";
+import { ApiServiceUsuario } from "../services/api-service-usuario.js";
 import { FilmesView } from "../views/filmes-view.js";
 import { MensagemView } from "../views/mensagem-view.js";
-import { UsuarioController } from "./usuario-controller.js";
 
 export class FilmeController {
   private inputNome: HTMLInputElement;
   private inputCategoria: HTMLInputElement;
   private inputAno: HTMLInputElement;
   private inputImagem: HTMLInputElement;
+
   private filmesContainer: HTMLElement;
   private btnLogout: HTMLElement;
 
   private filmes = new Filmes();
   private filmesView = new FilmesView("#filmes-container");
+
   private mensagemViewAdd = new MensagemView(".mensagemViewAdd");
   private mensagemViewEdit = new MensagemView(".mensagemViewEdit");
 
@@ -37,10 +39,7 @@ export class FilmeController {
     this.btnLogout = document.querySelector("#btnLogout") as HTMLElement;
 
     if (this.btnLogout) {
-      this.btnLogout.addEventListener(
-        "click",
-        UsuarioController.logoutUsuario.bind(this)
-      );
+      this.btnLogout.addEventListener("click", this.logoutUsuario);
     }
   }
 
@@ -71,7 +70,7 @@ export class FilmeController {
     formData.append("poster", file);
 
     try {
-      const filmeAdicionado = await ApiServiceFilmesApi.salvarFilme(formData);
+      const filmeAdicionado = await ApiServiceFilmes.salvarFilme(formData);
       console.log(filmeAdicionado);
 
       const categorias: string[] = genero
@@ -106,7 +105,7 @@ export class FilmeController {
     posterArquivo: File | undefined
   ) {
     try {
-      const filmeOriginal: FilmeApi = await ApiServiceFilmesApi.buscarFilmeByID(
+      const filmeOriginal: FilmeApi = await ApiServiceFilmes.buscarFilmeByID(
         parseInt(id)
       );
 
@@ -136,7 +135,7 @@ export class FilmeController {
         filmeAtualizado.append("poster", posterArquivo);
       }
 
-      await ApiServiceFilmesApi.atualizarFilme(parseInt(id), filmeAtualizado);
+      await ApiServiceFilmes.atualizarFilme(parseInt(id), filmeAtualizado);
 
       this.filmes.atualizaFilme(
         parseInt(id),
@@ -156,11 +155,14 @@ export class FilmeController {
 
   public async excluirFilme(id: string) {
     try {
-      await ApiServiceFilmesApi.excluirFilme(parseInt(id));
-
+      await ApiServiceFilmes.excluirFilme(parseInt(id));
+      this.mensagemViewEdit.update("Filme excluido com sucesso!", 3000);
       this.filmes.excluirFilme(parseInt(id));
       this.atualizacaoView();
-    } catch (error) {}
+    } catch (error) {
+      this.mensagemViewEdit.update("Erro ao excluir filme", 3000);
+      throw error;
+    }
   }
 
   public buscarFilmePeloId(id: string): Filme {
@@ -177,7 +179,7 @@ export class FilmeController {
 
   public async adicionaFilmesDaApi() {
     try {
-      const respostaApi: RespostaApi = await ApiServiceFilmesApi.buscarFilmes();
+      const respostaApi: RespostaApi = await ApiServiceFilmes.buscarFilmes();
       const filmesApi: FilmeApi[] = respostaApi.results;
 
       filmesApi.forEach((filme) => {
@@ -202,6 +204,17 @@ export class FilmeController {
   public filtrarCategoria(categoria: string): void {
     const filmesFiltrados = this.filmes.filtrar(categoria);
     this.filmesView.update(filmesFiltrados);
+  }
+
+  private async logoutUsuario() {
+    try {
+      await ApiServiceUsuario.logout();
+      console.log("Logout realizado com sucesso.");
+
+      window.location.href = "../index.html";
+    } catch (error) {
+      console.error("Erro ao fazer logout", error);
+    }
   }
 
   private limparFormulario(): void {

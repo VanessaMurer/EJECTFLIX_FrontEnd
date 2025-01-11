@@ -11,7 +11,6 @@ export class ApiServiceUsuario {
     static login(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(username, password);
                 const response = yield axios.post(`${this.BASE_URL}/login/`, { username, password }, {
                     headers: {
                         "Content-Type": "application/json",
@@ -53,27 +52,26 @@ export class ApiServiceUsuario {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const confirm_password = password;
-                const cadastro = {
+                const email = username + "@gmail.com";
+                const response = yield axios.post(`${this.BASE_URL}/register/`, {
                     username,
+                    email,
                     password,
                     confirm_password,
-                };
-                const response = yield axios.post(`${this.BASE_URL}/register/`, cadastro, {
+                }, {
                     headers: {
                         "Content-Type": "application/json",
                     },
+                    withCredentials: true,
                 });
-                if (response.status === 201) {
-                    console.log("Registro realizado com sucesso:", response.data);
-                    return response.data;
-                }
-                else {
-                    throw new Error(`Erro no registro: ${response.status} - ${response.statusText}`);
-                }
+                return response.data;
             }
             catch (error) {
-                console.error("Erro ao realizar o registro:", error.message);
-                console.log(error.response.data);
+                console.error("Erro ao realizar o registro:", error);
+                if (error.response) {
+                    console.error("Status do erro:", error.response.status);
+                    console.error("Dados do erro:", error.response.data);
+                }
                 throw error;
             }
         });

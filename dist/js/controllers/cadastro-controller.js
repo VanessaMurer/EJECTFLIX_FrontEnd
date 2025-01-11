@@ -8,56 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { ApiServiceUsuario } from "../services/api-service-usuario.js";
-export class UsuarioController {
+import { MensagemView } from "../views/mensagem-view.js";
+export class CadastroController {
     constructor() {
-        this.inputUsername = null;
-        this.inputPassword = null;
         this.usernameCadastro = null;
         this.passwordCadastro = null;
-        this.formLogin = null;
         this.formCadastro = null;
-        this.formLogin = document.querySelector("#login-form");
+        this.mensagemViewCadastro = new MensagemView(".mensagemViewCadastro");
         this.formCadastro = document.querySelector("#cadastro-form");
-        if (this.formLogin) {
-            this.inputUsername = document.querySelector("#inputUsername");
-            this.inputPassword = document.querySelector("#inputPassword");
-        }
         if (this.formCadastro) {
             this.usernameCadastro = document.querySelector("#usernameCadastro");
             this.passwordCadastro = document.querySelector("#passwordCadastro");
         }
     }
-    loginUsuario() {
-        if (this.formLogin && this.inputUsername && this.inputPassword) {
-            this.formLogin.addEventListener("submit", (event) => {
-                event.preventDefault();
-                this.credenciaisUsuario();
-            });
-        }
-    }
-    credenciaisUsuario() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.inputUsername || !this.inputPassword)
-                return;
-            const username = this.inputUsername.value;
-            const password = this.inputPassword.value;
-            try {
-                yield ApiServiceUsuario.login(username, password);
-                console.log("Login realizado com sucesso.");
-                window.location.href = "./pages/filmes.html";
-            }
-            catch (error) {
-                console.log("Erro ao fazer login", error);
-                window.location.href = "./pages/cadastro.html";
-            }
-        });
-    }
     cadastroUsuario() {
         if (this.formCadastro && this.usernameCadastro && this.passwordCadastro) {
-            console.log("Formulário de cadastro encontrado. Registrando evento...");
             this.formCadastro.addEventListener("submit", (event) => {
                 event.preventDefault();
-                console.log("oi submit");
                 this.credenciaisCadastro();
             });
         }
@@ -68,26 +35,15 @@ export class UsuarioController {
                 return;
             const username = this.usernameCadastro.value;
             const password = this.passwordCadastro.value;
-            console.log(username, password);
             try {
                 yield ApiServiceUsuario.register(username, password);
                 console.log("Cadastro realizado com sucesso.");
-                window.location.href = "./index.html";
-            }
-            catch (error) {
-                console.log("Erro ao fazer cadastro", error);
-            }
-        });
-    }
-    static logoutUsuario() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield ApiServiceUsuario.logout();
-                console.log("Logout realizado com sucesso.");
+                this.mensagemViewCadastro.update("Cadastro realizado com sucesso!", 3000);
                 window.location.href = "../index.html";
             }
             catch (error) {
-                console.error("Erro ao fazer logout", error);
+                console.log("Erro ao realizar cadastro", error);
+                this.mensagemViewCadastro.update("Erro ao realizar cadastro!", 3000);
             }
         });
     }

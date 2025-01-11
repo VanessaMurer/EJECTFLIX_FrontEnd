@@ -1,30 +1,27 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
+import { CadastroController } from "./controllers/cadastro-controller.js";
 import { FilmeController } from "./controllers/filme-controller.js";
-import { UsuarioController } from "./controllers/usuario-controller.js";
-const controllerUsuarios = new UsuarioController();
-const controllerFilmes = new FilmeController();
-function init() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            controllerUsuarios.loginUsuario();
-            yield controllerFilmes.adicionaFilmesDaApi();
-            registrarEventos();
-            console.log("Aplicação inicializada.");
-        }
-        catch (error) {
-            console.error("Erro durante a inicialização:", error);
-        }
-    });
-}
-function registrarEventos() {
+import { LoginController } from "./controllers/login-controller.js";
+document.addEventListener("DOMContentLoaded", () => {
+    const currentPath = window.location.pathname;
+    if (currentPath.includes("index.html") || currentPath === "/") {
+        const loginController = new LoginController();
+        loginController.loginUsuario();
+        console.log(currentPath);
+    }
+    else if (currentPath.includes("cadastro.html")) {
+        const controllerUsuariosCadastro = new CadastroController();
+        controllerUsuariosCadastro.cadastroUsuario();
+        console.log("Página de cadastro inicializada:", currentPath);
+    }
+    else if (currentPath.includes("filmes.html")) {
+        const controllerFilmes = new FilmeController();
+        controllerFilmes.adicionaFilmesDaApi();
+        console.log(currentPath);
+        registrarEventos(controllerFilmes);
+    }
+    console.log("Aplicação inicializada na página:", currentPath);
+});
+function registrarEventos(controllerFilmes) {
     const formAdd = document.querySelector("#form-add");
     const containerFilmes = document.querySelector("#filmes-container");
     const btnsCategorias = document.querySelectorAll("[data-category]");
@@ -41,7 +38,10 @@ function registrarEventos() {
             const target = event.target;
             if (target.classList.contains("btnPlusEdit")) {
                 const id = target.getAttribute("data-id");
-                console.log(id);
+                if (!id) {
+                    console.error("ID do filme não encontrado.");
+                    return;
+                }
                 const filmeEditar = controllerFilmes.buscarFilmePeloId(id);
                 const nomeFilmeEdit = document.querySelector("#nomeFilmeEdit");
                 const categoriaFilmeEdit = document.querySelector("#categoriaFilmeEdit");
@@ -53,7 +53,7 @@ function registrarEventos() {
                     nomeFilmeEdit.setAttribute("data-id", id);
                 }
                 else {
-                    console.error("Elementos de edição não encontrados");
+                    console.error("Campos de edição não encontrados.");
                 }
             }
         });
@@ -66,16 +66,26 @@ function registrarEventos() {
             const categoriaFilmeEdit = document.querySelector("#categoriaFilmeEdit");
             const anoFilmeEdit = document.querySelector("#anoFilmeEdit");
             const posterFilmeEdit = document.querySelector("#editImagem");
-            const id = nomeFilmeEdit.getAttribute("data-id");
-            controllerFilmes.editandoFilmeFromFormulario(id, nomeFilmeEdit.value, categoriaFilmeEdit.value, anoFilmeEdit.value, (_a = posterFilmeEdit.files) === null || _a === void 0 ? void 0 : _a[0]);
+            const id = nomeFilmeEdit === null || nomeFilmeEdit === void 0 ? void 0 : nomeFilmeEdit.getAttribute("data-id");
+            if (id) {
+                controllerFilmes.editandoFilmeFromFormulario(id, nomeFilmeEdit.value, categoriaFilmeEdit.value, anoFilmeEdit.value, (_a = posterFilmeEdit === null || posterFilmeEdit === void 0 ? void 0 : posterFilmeEdit.files) === null || _a === void 0 ? void 0 : _a[0]);
+            }
+            else {
+                console.error("ID do filme para edição não encontrado.");
+            }
         });
     }
     if (btnExcluir) {
         btnExcluir.addEventListener("click", (event) => {
             event.preventDefault();
             const nomeFilmeEdit = document.querySelector("#nomeFilmeEdit");
-            const id = nomeFilmeEdit.getAttribute("data-id");
-            controllerFilmes.excluirFilme(id);
+            const id = nomeFilmeEdit === null || nomeFilmeEdit === void 0 ? void 0 : nomeFilmeEdit.getAttribute("data-id");
+            if (id) {
+                controllerFilmes.excluirFilme(id);
+            }
+            else {
+                console.error("ID do filme para exclusão não encontrado.");
+            }
         });
     }
     btnsCategorias.forEach((btn) => {
@@ -85,7 +95,9 @@ function registrarEventos() {
             if (categoria) {
                 controllerFilmes.filtrarCategoria(categoria);
             }
+            else {
+                console.error("Categoria não encontrada.");
+            }
         });
     });
 }
-init();

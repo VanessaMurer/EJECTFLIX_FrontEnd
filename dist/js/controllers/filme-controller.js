@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Filme } from "../models/filme.js";
 import { Filmes } from "../models/filmes.js";
-import { ApiServiceFilmesApi } from "../services/api-service-filmes-api.js";
+import { ApiServiceFilmes } from "../services/api-service-filmes.js";
+import { ApiServiceUsuario } from "../services/api-service-usuario.js";
 import { FilmesView } from "../views/filmes-view.js";
 import { MensagemView } from "../views/mensagem-view.js";
-import { UsuarioController } from "./usuario-controller.js";
 export class FilmeController {
     constructor() {
         this.filmes = new Filmes();
@@ -26,7 +26,7 @@ export class FilmeController {
         this.filmesContainer = document.querySelector("#filmes-container");
         this.btnLogout = document.querySelector("#btnLogout");
         if (this.btnLogout) {
-            this.btnLogout.addEventListener("click", UsuarioController.logoutUsuario.bind(this));
+            this.btnLogout.addEventListener("click", this.logoutUsuario);
         }
     }
     adicionarFilmeFromFormulario() {
@@ -52,7 +52,7 @@ export class FilmeController {
             formData.append("avaliacao_media", "7.0");
             formData.append("poster", file);
             try {
-                const filmeAdicionado = yield ApiServiceFilmesApi.salvarFilme(formData);
+                const filmeAdicionado = yield ApiServiceFilmes.salvarFilme(formData);
                 console.log(filmeAdicionado);
                 const categorias = genero
                     .split(",")
@@ -72,7 +72,7 @@ export class FilmeController {
     editandoFilmeFromFormulario(id, tituloEditado, categoriaEditada, anoEditado, posterArquivo) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const filmeOriginal = yield ApiServiceFilmesApi.buscarFilmeByID(parseInt(id));
+                const filmeOriginal = yield ApiServiceFilmes.buscarFilmeByID(parseInt(id));
                 const anoLancamento = parseInt(anoEditado);
                 const categorias = categoriaEditada
                     .split(",")
@@ -89,7 +89,7 @@ export class FilmeController {
                 if (posterArquivo) {
                     filmeAtualizado.append("poster", posterArquivo);
                 }
-                yield ApiServiceFilmesApi.atualizarFilme(parseInt(id), filmeAtualizado);
+                yield ApiServiceFilmes.atualizarFilme(parseInt(id), filmeAtualizado);
                 this.filmes.atualizaFilme(parseInt(id), tituloEditado, categorias, anoLancamento, filmeOriginal.poster);
                 this.atualizacaoView();
                 this.mensagemViewEdit.update("Filme editado com sucesso!", 3000);
@@ -103,11 +103,15 @@ export class FilmeController {
     excluirFilme(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield ApiServiceFilmesApi.excluirFilme(parseInt(id));
+                yield ApiServiceFilmes.excluirFilme(parseInt(id));
+                this.mensagemViewEdit.update("Filme excluido com sucesso!", 3000);
                 this.filmes.excluirFilme(parseInt(id));
                 this.atualizacaoView();
             }
-            catch (error) { }
+            catch (error) {
+                this.mensagemViewEdit.update("Erro ao excluir filme", 3000);
+                throw error;
+            }
         });
     }
     buscarFilmePeloId(id) {
@@ -124,7 +128,7 @@ export class FilmeController {
     adicionaFilmesDaApi() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const respostaApi = yield ApiServiceFilmesApi.buscarFilmes();
+                const respostaApi = yield ApiServiceFilmes.buscarFilmes();
                 const filmesApi = respostaApi.results;
                 filmesApi.forEach((filme) => {
                     const nome = filme.titulo;
@@ -147,6 +151,18 @@ export class FilmeController {
     filtrarCategoria(categoria) {
         const filmesFiltrados = this.filmes.filtrar(categoria);
         this.filmesView.update(filmesFiltrados);
+    }
+    logoutUsuario() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield ApiServiceUsuario.logout();
+                console.log("Logout realizado com sucesso.");
+                window.location.href = "../index.html";
+            }
+            catch (error) {
+                console.error("Erro ao fazer logout", error);
+            }
+        });
     }
     limparFormulario() {
         this.inputNome.value = "";

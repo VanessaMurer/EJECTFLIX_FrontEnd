@@ -1,4 +1,4 @@
-import { Filmes } from "../models/filmes";
+import { Filmes } from "../models/filmes.js";
 import { View } from "./view.js";
 
 export class FilmesView extends View<Filmes> {
