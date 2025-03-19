@@ -21,3 +21,6 @@ EJECTFLIX é um catálogo de filmes interativo desenvolvido para consumo de uma 
 ## Repositório da API
 
 https://github.com/JulioSoaresA/movies_api
+
+## Deploy
+https://ejectflix-murer.netlify.app/
